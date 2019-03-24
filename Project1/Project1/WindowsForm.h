@@ -527,15 +527,18 @@ namespace Project1 {
 				}
 				else if (userCommand[0] == "isli")
 				{
-					// isli(A, B)
-					// 分割 A, B
+					// isli(A, B, ...)
+					// 依據 ',' 分割
+					std::vector<Vector> vectors;
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims, 2);
-					// A, B 分別交給DataManager處理
-					Vector variable_a = dataManager->VectorCalculate(variables[0]);
-					Vector variable_b = dataManager->VectorCalculate(variables[1]);
+					array<String^> ^variables = userInput->Split(delims);
+					// 所有 variable 分別交給 DataManager 處理
+					for (unsigned int i = 0; i < variables->Length; ++i)
+					{
+						vectors.push_back(dataManager->VectorCalculate(variables[i]));
+					}
 					//輸出
-					if (isln(variable_a, variable_b))
+					if (isln(vectors))
 					{
 						outputTemp += "Y";
 					}

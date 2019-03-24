@@ -41,7 +41,7 @@ public:
 	friend bool isorthogonal(const Vector& A, const Vector& B);
 	friend double angle(const Vector& A, const Vector& B);
 	friend Vector pn(const Vector& A, const Vector& B);
-	friend bool isln(const Vector& A, const Vector& B);
+	friend bool isln(std::vector<Vector> vectors);
 	friend std::vector<Vector> ob(std::vector<Vector> vectors);
 };
 

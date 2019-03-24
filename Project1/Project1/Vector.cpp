@@ -135,7 +135,7 @@ Vector pn(const Vector& A, const Vector& B)
 	return Vector();
 }
 
-bool isln(const Vector& A, const Vector& B)
+bool isln(std::vector<Vector> vectors)
 {
 	return false;
 }

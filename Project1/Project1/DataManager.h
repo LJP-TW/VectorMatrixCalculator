@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector.h"
+#include "Matrix.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -11,8 +12,8 @@ class DataManager
 private:
 	//儲存向量資料
 	std::vector<Vector> Vectors;
-	//紀錄向量ID，用於控管
-	int  VectorVariableIndex;
+	//儲存矩陣資料
+	std::vector<Matrix> Matrices;
 	//紀錄檔案路徑名稱
 	std::string FileName;
 public:
@@ -21,8 +22,14 @@ public:
 	bool LoadVectorData();
 	//取得向量資料
 	std::vector<Vector> GetVectors();
+	//運算向量資料
+	Vector VectorCalculate(System::String^ command);
+	//讀取矩陣資料
+	bool LoadMatrixData();
+	//取得矩陣資料
+	std::vector<Matrix> GetMatrices();
+	//運算矩陣資料
+	Matrix MatrixCalculate(System::String^ command);
 	//設置檔案路徑名稱
 	void SetFileName(std::string fileName);
-	//運算向量資料
-	Vector Calculate(System::String^ command);
 };

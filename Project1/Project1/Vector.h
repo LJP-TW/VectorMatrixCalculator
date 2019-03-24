@@ -6,12 +6,30 @@
 class Vector
 {
 public:
+	Vector();
+
 	std::string Name;
 	std::vector<double> Data;
 
-	Vector() {};
+	/*
+	 * 以下為 Vector 能操作的行為
+	 * 皆可能會 throw 
+	 * - DIMENSION_NON_EQUIVALENT
+	 */
 
+	/*
+	 * Addition
+	 */
 	Vector operator +(const Vector& v);
+
+	/*
+	 * Subtraction
+	 */
+	Vector operator -(const Vector& v);
+
+	/*
+	 * Dot or Scalar multiplication
+	 */
 	Vector operator *(const Vector& v);
 	double norm();
 	double normal();

@@ -1,9 +1,9 @@
 #include "Vector.h"
 
-/*
- * Adding
- * throw (DIMENSION_NON_EQUIVALENT)
- */
+Vector::Vector()
+{
+}
+
 Vector Vector::operator+(const Vector & v)
 {
 	// 判斷是否可以相加 --> 維度必須相同
@@ -22,10 +22,24 @@ Vector Vector::operator+(const Vector & v)
 	return result;
 }
 
-/*
- * Dot or Scalar
- * throw (DIMENSION_NON_EQUIVALENT)
- */
+Vector Vector::operator-(const Vector & v)
+{
+	// 判斷是否可以相減 --> 維度必須相同
+	if (this->Data.size() != v.Data.size())
+	{
+		throw VECTOR_ERROR::DIMENSION_NON_EQUIVALENT;
+	}
+
+	Vector result = *this;
+
+	for (unsigned int i = 0; i < result.Data.size(); ++i)
+	{
+		result.Data[i] -= v.Data[i];
+	}
+
+	return result;
+}
+
 Vector Vector::operator*(const Vector & v)
 {
 	// 判斷是否可以求 dot --> 維度必須相同

@@ -47,7 +47,7 @@ public:
 	Matrix adj();
 	std::vector<Matrix> eigen();
 	std::vector<Matrix> pm();
-	friend Matrix leastsquare(Matrix& A, Matrix& B);
+	friend Matrix leastsquare(const Matrix& A, const Matrix& B);
 };
 
 // 定義相關錯誤

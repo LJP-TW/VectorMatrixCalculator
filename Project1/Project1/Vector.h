@@ -33,15 +33,15 @@ public:
 	Vector operator *(const Vector& v);
 	double norm();
 	double normal();
-	friend Vector cross(Vector& A, Vector& B);
-	friend double com(Vector& A, Vector& B);
-	friend Vector proj(Vector& A, Vector& B);
-	friend double area(Vector& A, Vector& B);
-	friend bool isparallel(Vector& A, Vector& B);
-	friend bool isorthogonal(Vector& A, Vector& B);
-	friend double angle(Vector& A, Vector& B);
-	friend Vector pn(Vector& A, Vector& B);
-	friend bool isln(Vector& A, Vector& B);
+	friend Vector cross(const Vector& A, const Vector& B);
+	friend double com(const Vector& A, const Vector& B);
+	friend Vector proj(const Vector& A, const Vector& B);
+	friend double area(const Vector& A, const Vector& B);
+	friend bool isparallel(const Vector& A, const Vector& B);
+	friend bool isorthogonal(const Vector& A, const Vector& B);
+	friend double angle(const Vector& A, const Vector& B);
+	friend Vector pn(const Vector& A, const Vector& B);
+	friend bool isln(const Vector& A, const Vector& B);
 	friend std::vector<Vector> ob(std::vector<Vector> vectors);
 };
 

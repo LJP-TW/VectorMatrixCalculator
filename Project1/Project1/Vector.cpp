@@ -95,47 +95,47 @@ double Vector::normal()
 	return 0.0;
 }
 
-Vector cross(Vector & A, Vector & B)
+Vector cross(const Vector& A, const Vector& B)
 {
 	return Vector();
 }
 
-double com(Vector & A, Vector & B)
+double com(const Vector& A, const Vector& B)
 {
 	return 0.0;
 }
 
-Vector proj(Vector & A, Vector & B)
+Vector proj(const Vector& A, const Vector& B)
 {
 	return Vector();
 }
 
-double area(Vector & A, Vector & B)
+double area(const Vector& A, const Vector& B)
 {
 	return 0.0;
 }
 
-bool isparallel(Vector & A, Vector & B)
+bool isparallel(const Vector& A, const Vector& B)
 {
 	return false;
 }
 
-bool isorthogonal(Vector & A, Vector & B)
+bool isorthogonal(const Vector& A, const Vector& B)
 {
 	return false;
 }
 
-double angle(Vector & A, Vector & B)
+double angle(const Vector& A, const Vector& B)
 {
 	return 0.0;
 }
 
-Vector pn(Vector & A, Vector & B)
+Vector pn(const Vector& A, const Vector& B)
 {
 	return Vector();
 }
 
-bool isln(Vector & A, Vector & B)
+bool isln(const Vector& A, const Vector& B)
 {
 	return false;
 }

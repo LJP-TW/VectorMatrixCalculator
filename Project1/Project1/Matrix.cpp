@@ -92,7 +92,17 @@ double Matrix::rank()
 
 Matrix Matrix::trans()
 {
-	return Matrix();
+	Matrix result;
+	for (unsigned int x = 0; x < this->Data[0].size(); ++x)
+	{
+		std::vector<double> rowVectorTemp;
+		for (unsigned int y = 0; y < this->Data.size(); ++y)
+		{
+			rowVectorTemp.push_back(this->Data[y][x]);
+		}
+		result.Data.push_back(rowVectorTemp);
+	}
+	return result;
 }
 
 double Matrix::det()
@@ -120,7 +130,7 @@ std::vector<Matrix> Matrix::pm()
 	return std::vector<Matrix>();
 }
 
-Matrix leastsquare(Matrix & A, Matrix & B)
+Matrix leastsquare(const Matrix & A, const Matrix & B)
 {
 	return Matrix();
 }

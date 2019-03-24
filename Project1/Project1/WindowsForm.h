@@ -361,7 +361,7 @@ namespace Project1 {
 					Vector temp = dataManager->VectorCalculate(userCommand[1]);
 					//輸出
 					outputTemp += "[";
-					outputTemp += gcnew String(std::to_string(temp.norm()).c_str());
+					outputTemp += temp.norm().ToString();
 					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
 					Output->AppendText(outputTemp);
 				}
@@ -371,7 +371,7 @@ namespace Project1 {
 					Vector temp = dataManager->VectorCalculate(userCommand[1]);
 					//輸出
 					outputTemp += "[";
-					outputTemp += gcnew String(std::to_string(temp.normal()).c_str());
+					outputTemp += temp.normal().ToString();
 					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
 					Output->AppendText(outputTemp);
 				}
@@ -384,9 +384,9 @@ namespace Project1 {
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
+					Vector result = cross(variable_a, variable_b);
 					//輸出
 					outputTemp += "[";
-					Vector result = cross(variable_a, variable_b);
 					for (unsigned int i = 0; i < result.Data.size(); ++i)
 					{
 						outputTemp += result.Data[i].ToString();
@@ -407,7 +407,7 @@ namespace Project1 {
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
 					//輸出
 					outputTemp += "[";
-					outputTemp += gcnew String(std::to_string(com(variable_a, variable_b)).c_str());
+					outputTemp += com(variable_a, variable_b).ToString();
 					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
 					Output->AppendText(outputTemp);
 				}
@@ -420,9 +420,9 @@ namespace Project1 {
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
+					Vector result = proj(variable_a, variable_b);
 					//輸出
 					outputTemp += "[";
-					Vector result = proj(variable_a, variable_b);
 					for (unsigned int i = 0; i < result.Data.size(); ++i)
 					{
 						outputTemp += result.Data[i].ToString();
@@ -443,7 +443,7 @@ namespace Project1 {
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
 					//輸出
 					outputTemp += "[";
-					outputTemp += gcnew String(std::to_string(area(variable_a, variable_b)).c_str());
+					outputTemp += area(variable_a, variable_b).ToString();
 					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
 					Output->AppendText(outputTemp);
 				}
@@ -500,7 +500,7 @@ namespace Project1 {
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
 					//輸出
 					outputTemp += "theta = ";
-					outputTemp += gcnew String(std::to_string(angle(variable_a, variable_b)).c_str());
+					outputTemp += angle(variable_a, variable_b).ToString();
 					outputTemp += Environment::NewLine + Environment::NewLine;
 					Output->AppendText(outputTemp);
 				}
@@ -513,9 +513,9 @@ namespace Project1 {
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
+					Vector result = pn(variable_a, variable_b);
 					//輸出
 					outputTemp += "[";
-					Vector result = pn(variable_a, variable_b);
 					for (unsigned int i = 0; i < result.Data.size(); ++i)
 					{
 						outputTemp += result.Data[i].ToString();
@@ -601,7 +601,7 @@ namespace Project1 {
 		}
 
 	}
-	private: System::Void Input_TextChanged_Matrix(System::Object^  sender, System::EventArgs^  e) 
+	private: System::Void Input_TextChanged_Matrix(System::Object^  sender, System::EventArgs^  e)
 	{
 		if (nowMode != MATRIX_MODE)
 			return;
@@ -639,6 +639,200 @@ namespace Project1 {
 					}
 					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
 					Output->AppendText(outputTemp);
+				}
+				else if (userCommand[0] == "rank")
+				{
+					//先交給DataManager處理
+					Matrix temp = dataManager->MatrixCalculate(userCommand[1]);
+					//輸出
+					outputTemp += "[";
+					outputTemp += temp.rank().ToString();
+					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
+					Output->AppendText(outputTemp);
+				}
+				else if (userCommand[0] == "trans")
+				{
+					//先交給DataManager處理
+					Matrix temp = dataManager->MatrixCalculate(userCommand[1]);
+					temp = temp.trans();
+					//輸出
+					outputTemp += "[";
+					for (unsigned int y = 0; y < temp.Data.size(); ++y)
+					{
+						for (unsigned int x = 0; x < temp.Data[y].size(); ++x)
+						{
+							outputTemp += temp.Data[y][x].ToString();
+							if (x != temp.Data[y].size() - 1)
+								outputTemp += ",";
+						}
+						if (y != temp.Data.size() - 1)
+							outputTemp += Environment::NewLine;
+					}
+					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
+					Output->AppendText(outputTemp);
+				}
+				else if (userCommand[0] == "det")
+				{
+					//先交給DataManager處理
+					Matrix temp = dataManager->MatrixCalculate(userCommand[1]);
+					//輸出
+					outputTemp += "[";
+					outputTemp += temp.det().ToString();
+					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
+					Output->AppendText(outputTemp);
+				}
+				else if (userCommand[0] == "inverse")
+				{
+					//先交給DataManager處理
+					Matrix temp = dataManager->MatrixCalculate(userCommand[1]);
+					temp = temp.inverse();
+					//輸出
+					outputTemp += "[";
+					for (unsigned int y = 0; y < temp.Data.size(); ++y)
+					{
+						for (unsigned int x = 0; x < temp.Data[y].size(); ++x)
+						{
+							outputTemp += temp.Data[y][x].ToString();
+							if (x != temp.Data[y].size() - 1)
+								outputTemp += ",";
+						}
+						if (y != temp.Data.size() - 1)
+							outputTemp += Environment::NewLine;
+					}
+					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
+					Output->AppendText(outputTemp);
+				}
+				else if (userCommand[0] == "adj")
+				{
+					//先交給DataManager處理
+					Matrix temp = dataManager->MatrixCalculate(userCommand[1]);
+					temp = temp.adj();
+					//輸出
+					outputTemp += temp.Data.size().ToString();
+					outputTemp += " ";
+					outputTemp += temp.Data[0].size().ToString() + Environment::NewLine;
+					outputTemp += "[";
+					for (unsigned int y = 0; y < temp.Data.size(); ++y)
+					{
+						for (unsigned int x = 0; x < temp.Data[y].size(); ++x)
+						{
+							outputTemp += temp.Data[y][x].ToString();
+							if (x != temp.Data[y].size() - 1)
+								outputTemp += ",";
+						}
+						if (y != temp.Data.size() - 1)
+							outputTemp += Environment::NewLine;
+					}
+					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
+					Output->AppendText(outputTemp);
+				}
+				else if (userCommand[0] == "eigen")
+				{
+					//先交給DataManager處理
+					Matrix temp = dataManager->MatrixCalculate(userCommand[1]);
+					// eigen[0] 代表 Eigen Vector(v), eigen[1] 代表 Eigen Value(d)
+					std::vector<Matrix> eigen = temp.eigen();
+					//輸出
+					outputTemp += "v = " + Environment::NewLine;
+					outputTemp += "[";
+					for (unsigned int y = 0; y < eigen[0].Data.size(); ++y)
+					{
+						for (unsigned int x = 0; x < eigen[0].Data[y].size(); ++x)
+						{
+							outputTemp += eigen[0].Data[y][x].ToString();
+							if (x != eigen[0].Data[y].size() - 1)
+								outputTemp += ",";
+						}
+						if (y != eigen[0].Data.size() - 1)
+							outputTemp += Environment::NewLine;
+					}
+					outputTemp += "]" + Environment::NewLine;
+					outputTemp += "d = " + Environment::NewLine;
+					outputTemp += "[";
+					for (unsigned int y = 0; y < eigen[1].Data.size(); ++y)
+					{
+						for (unsigned int x = 0; x < eigen[1].Data[y].size(); ++x)
+						{
+							outputTemp += eigen[1].Data[y][x].ToString();
+							if (x != eigen[1].Data[y].size() - 1)
+								outputTemp += ",";
+						}
+						if (y != eigen[1].Data.size() - 1)
+							outputTemp += Environment::NewLine;
+					}
+					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
+					Output->AppendText(outputTemp);
+				}
+				else if (userCommand[0] == "pm")
+				{
+					//先交給DataManager處理
+					Matrix temp = dataManager->MatrixCalculate(userCommand[1]);
+					// eigen[0] 代表 Eigen Vector(v), eigen[1] 代表 Eigen Value(d)
+					std::vector<Matrix> eigen = temp.pm();
+					//輸出
+					outputTemp += "v = " + Environment::NewLine;
+					outputTemp += "[";
+					for (unsigned int y = 0; y < eigen[0].Data.size(); ++y)
+					{
+						for (unsigned int x = 0; x < eigen[0].Data[y].size(); ++x)
+						{
+							outputTemp += eigen[0].Data[y][x].ToString();
+							if (x != eigen[0].Data[y].size() - 1)
+								outputTemp += ",";
+						}
+						if (y != eigen[0].Data.size() - 1)
+							outputTemp += Environment::NewLine;
+					}
+					outputTemp += "]" + Environment::NewLine;
+					outputTemp += "d = " + Environment::NewLine;
+					outputTemp += "[";
+					for (unsigned int y = 0; y < eigen[1].Data.size(); ++y)
+					{
+						for (unsigned int x = 0; x < eigen[1].Data[y].size(); ++x)
+						{
+							outputTemp += eigen[1].Data[y][x].ToString();
+							if (x != eigen[1].Data[y].size() - 1)
+								outputTemp += ",";
+						}
+						if (y != eigen[1].Data.size() - 1)
+							outputTemp += Environment::NewLine;
+					}
+					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
+					Output->AppendText(outputTemp);
+				}
+				else if (userCommand[0] == "leastsquare")
+				{
+					// leastsquare(A, B)
+					// 分割 A, B
+					array<Char>^ delims = { ',' };
+					array<String^> ^variables = userInput->Split(delims, 2);
+					// A, B 分別交給DataManager處理
+					Matrix variable_a = dataManager->MatrixCalculate(variables[0]);
+					Matrix variable_b = dataManager->MatrixCalculate(variables[1]);
+					Matrix result = leastsquare(variable_a, variable_b);
+					//先交給DataManager處理
+					//輸出
+					outputTemp += result.Data.size().ToString();
+					outputTemp += " ";
+					outputTemp += result.Data[0].size().ToString() + Environment::NewLine;
+					outputTemp += "[";
+					for (unsigned int y = 0; y < result.Data.size(); ++y)
+					{
+						for (unsigned int x = 0; x < result.Data[y].size(); ++x)
+						{
+							outputTemp += result.Data[y][x].ToString();
+							if (x != result.Data[y].size() - 1)
+								outputTemp += ",";
+						}
+						if (y != result.Data.size() - 1)
+							outputTemp += Environment::NewLine;
+					}
+					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
+					Output->AppendText(outputTemp);
+				}
+				else if (userCommand[0] == "rref")
+				{
+					// TODO
 				}
 				//都沒有 則判斷找不到指令
 				else

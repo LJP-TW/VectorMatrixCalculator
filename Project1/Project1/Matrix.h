@@ -35,6 +35,19 @@ public:
 	 * Solving linear system
 	 */
 	Matrix operator /(const Matrix& m);
+
+	/*
+	 * Rank
+	 */
+	double rank();
+
+	Matrix trans();
+	double det();
+	Matrix inverse();
+	Matrix adj();
+	std::vector<Matrix> eigen();
+	std::vector<Matrix> pm();
+	friend Matrix leastsquare(Matrix& A, Matrix& B);
 };
 
 // 定義相關錯誤

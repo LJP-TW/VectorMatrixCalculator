@@ -84,3 +84,43 @@ Matrix Matrix::operator/(const Matrix & m)
 {
 	return Matrix();
 }
+
+double Matrix::rank()
+{
+	return 0.0;
+}
+
+Matrix Matrix::trans()
+{
+	return Matrix();
+}
+
+double Matrix::det()
+{
+	return 0.0;
+}
+
+Matrix Matrix::inverse()
+{
+	return Matrix();
+}
+
+Matrix Matrix::adj()
+{
+	return Matrix();
+}
+
+std::vector<Matrix> Matrix::eigen()
+{
+	return std::vector<Matrix>();
+}
+
+std::vector<Matrix> Matrix::pm()
+{
+	return std::vector<Matrix>();
+}
+
+Matrix leastsquare(Matrix & A, Matrix & B)
+{
+	return Matrix();
+}

@@ -87,6 +87,7 @@ Vector Vector::operator*(const Vector & v)
 
 double Vector::norm()
 {
+	// Hi
 	return 0.0;
 }
 

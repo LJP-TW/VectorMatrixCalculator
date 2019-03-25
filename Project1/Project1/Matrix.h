@@ -34,7 +34,7 @@ public:
 	/*
 	 * Solving linear system
 	 */
-	Matrix operator /(const Matrix& m);
+	Matrix solve(const Matrix& m);
 
 	/*
 	 * Rank
@@ -55,5 +55,6 @@ enum class MATRIX_ERROR {
 	DIMENSION_NON_EQUIVALENT,
 	MULTIPLICATION_DIMENSION_ERROR,
 	ROW_DIMENSION_NON_EQUIVALENT,
-	NON_SQUARE
+	NON_SQUARE,
+	NON_SINGULAR
 };

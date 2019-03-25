@@ -1,4 +1,5 @@
 #include "Matrix.h"
+#include <cstdlib>
 
 Matrix::Matrix()
 {
@@ -80,7 +81,7 @@ Matrix Matrix::operator*(const Matrix & m)
 	return result;
 }
 
-Matrix Matrix::operator/(const Matrix & m)
+Matrix Matrix::solve(const Matrix & m)
 {
 	// Solving Ax = B, A.rows must equal B.rows, A must be square matrix
 	if (this->Data.size() != m.Data.size())
@@ -95,7 +96,7 @@ Matrix Matrix::operator/(const Matrix & m)
 	Matrix A = *this;
 	Matrix B = m;
 
-	// Gaussian elimination
+	// Gaussian elimination to get r.e.f.
 	for (unsigned int current = 0; current < A.Data[0].size(); ++current)
 	{
 		// Search for maximum in this column
@@ -103,12 +104,15 @@ Matrix Matrix::operator/(const Matrix & m)
 		unsigned int maxRow = current;
 		for (unsigned int r = current + 1; r < A.Data.size(); ++r)
 		{
-			if (A.Data[r][current] > maxNum)
+			if (abs(A.Data[r][current]) > maxNum)
 			{
 				maxNum = A.Data[r][current];
 				maxRow = r;
 			}
 		}
+
+		if (!maxNum)
+			throw MATRIX_ERROR::NON_SINGULAR;
 
 		// Swap maxRow to current row
 		for (unsigned int c = current; c < A.Data[0].size(); ++c)
@@ -124,7 +128,7 @@ Matrix Matrix::operator/(const Matrix & m)
 			B.Data[maxRow][c] = temp;
 		}
 
-		// Making pivot, doing elimination
+		// Doing elimination
 		for (unsigned int r = current + 1; r < A.Data.size(); ++r)
 		{
 			for (unsigned int c = current + 1; c < A.Data[0].size(); ++c)

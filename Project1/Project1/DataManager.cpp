@@ -267,7 +267,7 @@ Matrix DataManager::MatrixCalculate(System::String ^ command)
 			}
 			ops.Push(userCommand[i]);
 		}
-		else if (userCommand[i] == gcnew String("/"))
+		else if (userCommand[i] == gcnew String("\\"))
 		{
 			while (ops.Count != 0 \
 				&& (ops.Peek() == gcnew String("*") || \
@@ -317,7 +317,7 @@ Matrix DataManager::MatrixCalculate(System::String ^ command)
 			{
 				action = 3;
 			}
-			else if (postfix[i] == gcnew String("/"))
+			else if (postfix[i] == gcnew String("\\"))
 			{
 				action = 4;
 			}
@@ -350,7 +350,7 @@ Matrix DataManager::MatrixCalculate(System::String ^ command)
 				result.top() = result.top() * temp;
 				break;
 			case 4:
-				result.top() = result.top() / temp;
+				result.top() = result.top().solve(temp);
 				break;
 			default:
 				break;

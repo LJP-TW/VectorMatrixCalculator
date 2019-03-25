@@ -592,6 +592,7 @@ namespace Project1 {
 					Output->AppendText("Error: Dimension non equivalent.");
 					break;
 				}
+				Output->AppendText(Environment::NewLine);
 			}
 			userInput = "";
 		}
@@ -856,9 +857,13 @@ namespace Project1 {
 				case MATRIX_ERROR::ROW_DIMENSION_NON_EQUIVALENT:
 					Output->AppendText("Error: Number of row of A and B must be same when solving Ax=B.");
 					break;
+				case MATRIX_ERROR::NON_SINGULAR:
+					Output->AppendText("Error: Matrix are non-singular.");
+					break;
 				default:
 					break;
 				}
+				Output->AppendText(Environment::NewLine);
 			}
 			userInput = "";
 		}

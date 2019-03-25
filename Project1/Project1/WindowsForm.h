@@ -853,6 +853,11 @@ namespace Project1 {
 				case MATRIX_ERROR::MULTIPLICATION_DIMENSION_ERROR:
 					Output->AppendText("Error: Matrix multiplication dimension error.");
 					break;
+				case MATRIX_ERROR::ROW_DIMENSION_NON_EQUIVALENT:
+					Output->AppendText("Error: Number of row of A and B must be same when solving Ax=B.");
+					break;
+				default:
+					break;
 				}
 			}
 			userInput = "";

@@ -82,7 +82,81 @@ Matrix Matrix::operator*(const Matrix & m)
 
 Matrix Matrix::operator/(const Matrix & m)
 {
-	return Matrix();
+	// Solving Ax = B, A.rows must equal B.rows, A must be square matrix
+	if (this->Data.size() != m.Data.size())
+	{
+		throw MATRIX_ERROR::ROW_DIMENSION_NON_EQUIVALENT;
+	}
+	else if (this->Data.size() != this->Data[0].size())
+	{
+		throw MATRIX_ERROR::NON_SQUARE;
+	}
+
+	Matrix A = *this;
+	Matrix B = m;
+
+	// Gaussian elimination
+	for (unsigned int current = 0; current < A.Data[0].size(); ++current)
+	{
+		// Search for maximum in this column
+		double maxNum = A.Data[current][current];
+		unsigned int maxRow = current;
+		for (unsigned int r = current + 1; r < A.Data.size(); ++r)
+		{
+			if (A.Data[r][current] > maxNum)
+			{
+				maxNum = A.Data[r][current];
+				maxRow = r;
+			}
+		}
+
+		// Swap maxRow to current row
+		for (unsigned int c = current; c < A.Data[0].size(); ++c)
+		{
+			double temp = A.Data[current][c];
+			A.Data[current][c] = A.Data[maxRow][c];
+			A.Data[maxRow][c] = temp;
+		}
+		for (unsigned int c = 0; c < B.Data[0].size(); ++c)
+		{
+			double temp = B.Data[current][c];
+			B.Data[current][c] = B.Data[maxRow][c];
+			B.Data[maxRow][c] = temp;
+		}
+
+		// Making pivot, doing elimination
+		for (unsigned int r = current + 1; r < A.Data.size(); ++r)
+		{
+			for (unsigned int c = current + 1; c < A.Data[0].size(); ++c)
+			{
+				A.Data[r][c] -= ((A.Data[current][c] * A.Data[r][current] / A.Data[current][current]));
+			}
+			for (unsigned int c = 0; c < B.Data[0].size(); ++c)
+			{
+				B.Data[r][c] -= ((B.Data[current][c] * A.Data[r][current] / A.Data[current][current]));
+			}
+			A.Data[r][current] = 0;
+		}
+	}
+
+	// Get result by solving upper triangular matrix
+	for (int current = A.Data.size() - 1; current >= 0; --current)
+	{
+		for (unsigned int c = 0; c < B.Data[0].size(); ++c)
+		{
+			B.Data[current][c] /= A.Data[current][current];
+		}
+
+		for (int r = current - 1; r >= 0; --r)
+		{
+			for (unsigned int c = 0; c < B.Data[0].size(); ++c)
+			{
+				B.Data[r][c] -= (A.Data[r][current] * B.Data[current][c]);
+			}
+		}
+	}
+
+	return B;
 }
 
 double Matrix::rank()

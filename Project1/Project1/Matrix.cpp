@@ -106,7 +106,7 @@ Matrix Matrix::solve(const Matrix & m)
 		{
 			if (abs(A.Data[r][current]) > maxNum)
 			{
-				maxNum = A.Data[r][current];
+				maxNum = abs(A.Data[r][current]);
 				maxRow = r;
 			}
 		}
@@ -131,13 +131,17 @@ Matrix Matrix::solve(const Matrix & m)
 		// Doing elimination
 		for (unsigned int r = current + 1; r < A.Data.size(); ++r)
 		{
+			if (!A.Data[r][current])
+			{
+				continue;
+			}
 			for (unsigned int c = current + 1; c < A.Data[0].size(); ++c)
 			{
-				A.Data[r][c] -= ((A.Data[current][c] * A.Data[r][current] / A.Data[current][current]));
+				A.Data[r][c] -= (A.Data[current][c] * A.Data[r][current] / A.Data[current][current]);
 			}
 			for (unsigned int c = 0; c < B.Data[0].size(); ++c)
 			{
-				B.Data[r][c] -= ((B.Data[current][c] * A.Data[r][current] / A.Data[current][current]));
+				B.Data[r][c] -= (B.Data[current][c] * A.Data[r][current] / A.Data[current][current]);
 			}
 			A.Data[r][current] = 0;
 		}
@@ -163,9 +167,86 @@ Matrix Matrix::solve(const Matrix & m)
 	return B;
 }
 
-double Matrix::rank()
+unsigned int Matrix::rank()
 {
-	return 0.0;
+	Matrix A = *this;
+
+	// Gaussian elimination to get r.e.f.
+	for (unsigned int current_y = 0, current_x = 0; \
+		current_y < A.Data.size() && current_x < A.Data[0].size(); \
+		++current_y, ++current_x)
+	{
+		// Search for maximum in this column
+		double maxNum = A.Data[current_y][current_x];
+		unsigned int maxRow = current_y;
+		for (unsigned int r = current_y + 1; r < A.Data.size(); ++r)
+		{
+			if (abs(A.Data[r][current_x]) > maxNum)
+			{
+				maxNum = abs(A.Data[r][current_x]);
+				maxRow = r;
+			}
+		}
+
+		if (!maxNum)
+		{
+			--current_y;
+			continue;
+		}
+
+		// Swap maxRow to current row
+		for (unsigned int c = current_x; c < A.Data[0].size(); ++c)
+		{
+			double temp = A.Data[current_y][c];
+			A.Data[current_y][c] = A.Data[maxRow][c];
+			A.Data[maxRow][c] = temp;
+		}
+
+		// Doing elimination
+		for (unsigned int r = current_y + 1; r < A.Data.size(); ++r)
+		{
+			if (!A.Data[r][current_x])
+			{
+				continue;
+			}
+
+			for (unsigned int c = current_x + 1; c < A.Data[0].size(); ++c)
+			{
+				A.Data[r][c] -= (A.Data[current_y][c] * A.Data[r][current_x] / A.Data[current_y][current_x]);
+				// threshold
+				if (-10E-10 < A.Data[r][c] && A.Data[r][c] < 10E-10)
+				{
+					A.Data[r][c] = 0;
+				}
+			}
+			A.Data[r][current_x] = 0;
+		}
+	}
+
+	// Check for zero row
+	unsigned int zeroRow = 0;
+	for (int i = A.Data.size() - 1; i >= 0; --i)
+	{
+		bool isZeroRow = true;
+		for (int j = 0; j < A.Data[0].size(); ++j)
+		{
+			if (A.Data[i][j] != 0)
+			{
+				isZeroRow = false;
+				break;
+			}
+		}
+		if (isZeroRow)
+		{
+			++zeroRow;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return A.Data.size() - zeroRow;
 }
 
 Matrix Matrix::trans()

@@ -39,7 +39,7 @@ public:
 	/*
 	 * Rank
 	 */
-	double rank();
+	unsigned int rank();
 
 	Matrix trans();
 	double det();

@@ -100,7 +100,7 @@ Matrix Matrix::solve(const Matrix & m)
 	for (unsigned int current = 0; current < A.Data[0].size(); ++current)
 	{
 		// Search for maximum in this column
-		double maxNum = A.Data[current][current];
+		double maxNum = abs(A.Data[current][current]);
 		unsigned int maxRow = current;
 		for (unsigned int r = current + 1; r < A.Data.size(); ++r)
 		{
@@ -177,7 +177,7 @@ unsigned int Matrix::rank()
 		++current_y, ++current_x)
 	{
 		// Search for maximum in this column
-		double maxNum = A.Data[current_y][current_x];
+		double maxNum = abs(A.Data[current_y][current_x]);
 		unsigned int maxRow = current_y;
 		for (unsigned int r = current_y + 1; r < A.Data.size(); ++r)
 		{
@@ -213,13 +213,20 @@ unsigned int Matrix::rank()
 			for (unsigned int c = current_x + 1; c < A.Data[0].size(); ++c)
 			{
 				A.Data[r][c] -= (A.Data[current_y][c] * A.Data[r][current_x] / A.Data[current_y][current_x]);
-				// threshold
-				if (-10E-10 < A.Data[r][c] && A.Data[r][c] < 10E-10)
-				{
-					A.Data[r][c] = 0;
-				}
 			}
 			A.Data[r][current_x] = 0;
+		}
+	}
+
+	for (unsigned int y = 0; y < A.Data.size(); ++y)
+	{
+		for (unsigned int x = 0; x < A.Data[0].size(); ++x)
+		{
+			// threshold
+			if (-10E-12 < A.Data[y][x] && A.Data[y][x] < 10E-12)
+			{
+				A.Data[y][x] = 0;
+			}
 		}
 	}
 
@@ -274,6 +281,7 @@ double Matrix::det()
 
 	Matrix A = *this;
 	double result;
+	int sign = true;
 
 	// Gaussian elimination to get upper triangle matrix
 	for (unsigned int current_y = 0, current_x = 0; \
@@ -281,7 +289,7 @@ double Matrix::det()
 		++current_y, ++current_x)
 	{
 		// Search for maximum in this column
-		double maxNum = A.Data[current_y][current_x];
+		double maxNum = abs(A.Data[current_y][current_x]);
 		unsigned int maxRow = current_y;
 		for (unsigned int r = current_y + 1; r < A.Data.size(); ++r)
 		{
@@ -299,11 +307,15 @@ double Matrix::det()
 		}
 
 		// Swap maxRow to current row
-		for (unsigned int c = current_x; c < A.Data[0].size(); ++c)
+		if (current_y != maxRow)
 		{
-			double temp = A.Data[current_y][c];
-			A.Data[current_y][c] = A.Data[maxRow][c];
-			A.Data[maxRow][c] = temp;
+			for (unsigned int c = current_x; c < A.Data[0].size(); ++c)
+			{
+				double temp = A.Data[current_y][c];
+				A.Data[current_y][c] = A.Data[maxRow][c];
+				A.Data[maxRow][c] = temp;
+			}
+			sign = !sign;
 		}
 
 		// Doing elimination
@@ -317,11 +329,6 @@ double Matrix::det()
 			for (unsigned int c = current_x + 1; c < A.Data[0].size(); ++c)
 			{
 				A.Data[r][c] -= (A.Data[current_y][c] * A.Data[r][current_x] / A.Data[current_y][current_x]);
-				// threshold
-				if (-10E-10 < A.Data[r][c] && A.Data[r][c] < 10E-10)
-				{
-					A.Data[r][c] = 0;
-				}
 			}
 			A.Data[r][current_x] = 0;
 		}
@@ -333,7 +340,7 @@ double Matrix::det()
 	{
 		result *= A.Data[i][i];
 	}
-
+	result *= sign ? 1 : -1;
 	return result;
 }
 
@@ -377,7 +384,44 @@ Matrix Matrix::inverse()
 
 Matrix Matrix::adj()
 {
-	return Matrix();
+	// Solving inverse(A), A must be square matrix.
+	if (this->Data.size() != this->Data[0].size())
+	{
+		throw MATRIX_ERROR::NON_SQUARE;
+	}
+
+	Matrix result = *this;
+
+	for (unsigned int y = 0; y < this->Data.size(); ++y)
+	{
+		for (unsigned int x = 0; x < this->Data[0].size(); ++x)
+		{
+			Matrix temp;
+			for (unsigned int tempY = 0; tempY < this->Data.size(); ++tempY)
+			{
+				if (tempY == y)
+					continue;
+
+				std::vector<double> tempRowVector;
+				for (unsigned int tempX = 0; tempX < this->Data.size(); ++tempX)
+				{
+					if (tempX != x)
+					{
+						tempRowVector.push_back(this->Data[tempY][tempX]);
+					}
+				}
+
+				temp.Data.push_back(tempRowVector);
+			}
+
+			result.Data[x][y] = temp.det();
+			if ((y + x) % 2 == 1)
+			{
+				result.Data[x][y] *= -1;
+			}
+		}
+	}
+	return result;
 }
 
 std::vector<Matrix> Matrix::eigen()

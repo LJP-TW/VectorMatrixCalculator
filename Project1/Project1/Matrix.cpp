@@ -266,12 +266,113 @@ Matrix Matrix::trans()
 
 double Matrix::det()
 {
-	return 0.0;
+	// Solving det(A), A must be square matrix.
+	if (this->Data.size() != this->Data[0].size())
+	{
+		throw MATRIX_ERROR::NON_SQUARE;
+	}
+
+	Matrix A = *this;
+	double result;
+
+	// Gaussian elimination to get upper triangle matrix
+	for (unsigned int current_y = 0, current_x = 0; \
+		current_y < A.Data.size() && current_x < A.Data[0].size(); \
+		++current_y, ++current_x)
+	{
+		// Search for maximum in this column
+		double maxNum = A.Data[current_y][current_x];
+		unsigned int maxRow = current_y;
+		for (unsigned int r = current_y + 1; r < A.Data.size(); ++r)
+		{
+			if (abs(A.Data[r][current_x]) > maxNum)
+			{
+				maxNum = abs(A.Data[r][current_x]);
+				maxRow = r;
+			}
+		}
+
+		// If there is a zero in diagonal line, det(A) = 0
+		if (!maxNum)
+		{
+			return 0;
+		}
+
+		// Swap maxRow to current row
+		for (unsigned int c = current_x; c < A.Data[0].size(); ++c)
+		{
+			double temp = A.Data[current_y][c];
+			A.Data[current_y][c] = A.Data[maxRow][c];
+			A.Data[maxRow][c] = temp;
+		}
+
+		// Doing elimination
+		for (unsigned int r = current_y + 1; r < A.Data.size(); ++r)
+		{
+			if (!A.Data[r][current_x])
+			{
+				continue;
+			}
+
+			for (unsigned int c = current_x + 1; c < A.Data[0].size(); ++c)
+			{
+				A.Data[r][c] -= (A.Data[current_y][c] * A.Data[r][current_x] / A.Data[current_y][current_x]);
+				// threshold
+				if (-10E-10 < A.Data[r][c] && A.Data[r][c] < 10E-10)
+				{
+					A.Data[r][c] = 0;
+				}
+			}
+			A.Data[r][current_x] = 0;
+		}
+	}
+	
+	// Calculate det(A)
+	result = A.Data[0][0];
+	for (unsigned int i = 1; i < A.Data.size(); ++i)
+	{
+		result *= A.Data[i][i];
+	}
+
+	return result;
 }
 
 Matrix Matrix::inverse()
 {
-	return Matrix();
+	// Solving inverse(A), A must be square matrix.
+	if (this->Data.size() != this->Data[0].size())
+	{
+		throw MATRIX_ERROR::NON_SQUARE;
+	}
+
+	Matrix A = *this;
+	Matrix B, result;
+
+	// Making a identity matrix
+	for (unsigned r = 0; r < A.Data.size(); ++r)
+	{
+		std::vector<double> tempRowVector;
+		for (unsigned c = 0; c < A.Data.size(); ++c)
+		{
+			if (r == c)
+				tempRowVector.push_back(1);
+			else
+				tempRowVector.push_back(0);
+		}
+		B.Data.push_back(tempRowVector);
+	}
+
+	// Solving Ax=B
+	try
+	{
+		result = A.solve(B);
+	}
+	catch (...)
+	{
+		throw;
+	}
+
+	return result;
 }
 
 Matrix Matrix::adj()

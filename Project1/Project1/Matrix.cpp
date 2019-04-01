@@ -510,7 +510,7 @@ std::vector<Matrix> Matrix::eigen()
 				// |   0   0 a12 |
 				// |   0   0   0 |
 				// x0 = 0
-				// x1 = a12
+				// x1 = 0
 				// x2 = 0
 				tempEigenVector.push_back(0);
 				tempEigenVector.push_back(0);

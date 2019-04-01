@@ -489,21 +489,7 @@ std::vector<Matrix> Matrix::eigen()
 
 			A.ref();
 
-			if (A.Data[1][1] == 0)
-			{
-				// (A - DnI) = 
-				// | a00 a01 a02 |
-				// |   0   0 a12 |
-				// |   0   0   0 |
-				// x0 = a01
-				// x1 = -a00
-				// x2 = 0
-				tempEigenVector.push_back(A.Data[0][1]);
-				tempEigenVector.push_back(-A.Data[0][0]);
-				tempEigenVector.push_back(0);
-				eigenVectors.push_back(tempEigenVector);
-			}
-			else
+			if (A.Data[0][0] != 0)
 			{
 				// (A - DnI) = 
 				// | a00 a01 a02 |
@@ -515,6 +501,20 @@ std::vector<Matrix> Matrix::eigen()
 				tempEigenVector.push_back((A.Data[1][1] * A.Data[0][2] - A.Data[1][2] * A.Data[0][1]) / A.Data[0][0]);
 				tempEigenVector.push_back(A.Data[1][2]);
 				tempEigenVector.push_back(-A.Data[1][1]);
+				eigenVectors.push_back(tempEigenVector);
+			}
+			else
+			{
+				// (A - DnI) = 
+				// |   0 a01 a02 |
+				// |   0   0 a12 |
+				// |   0   0   0 |
+				// x0 = 0
+				// x1 = a12
+				// x2 = 0
+				tempEigenVector.push_back(0);
+				tempEigenVector.push_back(0);
+				tempEigenVector.push_back(0);
 				eigenVectors.push_back(tempEigenVector);
 			}
 			tempEigenVector.clear();

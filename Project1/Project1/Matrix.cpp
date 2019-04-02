@@ -116,7 +116,7 @@ Matrix Matrix::solve(const Matrix & m)
 		}
 
 		if (!maxNum)
-			throw MATRIX_ERROR::NON_SINGULAR;
+			throw MATRIX_ERROR::SINGULAR;
 
 		// Swap maxRow to current row
 		for (unsigned int c = current; c < A.Data[0].size(); ++c)
@@ -410,23 +410,82 @@ std::vector<Matrix> Matrix::eigen()
 		// a = 1
 		// b = (-A11) + (-A00)
 		// c = A00 * A11 - A01 * A10
-		double b, c;
+		double b, c, e[2];
 		b = -this->Data[0][0] - this->Data[1][1];
 		c = this->Data[0][0] * this->Data[1][1] - this->Data[0][1] * this->Data[1][0];
 
 		// Get eigenvalues by Quadric Equation
-		eigenValues.push_back((-b + sqrt(b * b - 4 * c)) / 2);
-		eigenValues.push_back((-b - sqrt(b * b - 4 * c)) / 2);
+		// 0 isn't a eigenvalue
+		if ((e[0] = (-b + sqrt(b * b - 4 * c)) / 2) == 0 || \
+			(e[1] = (-b - sqrt(b * b - 4 * c)) / 2) == 0)
+		{
+			throw MATRIX_ERROR::NON_DIAGONALIZABLE;
+		}
+		eigenValues.push_back(e[0]);
+		eigenValues.push_back(e[1]);
 
 		// Get eigenvectors
-		tempEigenVector.push_back(this->Data[0][1]);
-		tempEigenVector.push_back(eigenValues[0] - this->Data[0][0]);
-		eigenVectors.push_back(tempEigenVector);
+		for (unsigned int n = 0; n < 2; ++n)
+		{
+			// Produce (A - DnI)
+			// Dn: nth eigenvalue
+			// I : Identity matrix
+			Matrix A = *this;
+			for (unsigned int r = 0; r < 2; ++r)
+			{
+				A.Data[r][r] -= eigenValues[n];
+			}
 
-		tempEigenVector.clear();
-		tempEigenVector.push_back(this->Data[1][1] - eigenValues[1]);
-		tempEigenVector.push_back(this->Data[1][0]);
-		eigenVectors.push_back(tempEigenVector);
+			A.ref();
+
+			if (A.Data[0][0] != 0)
+			{
+				// (A - DnI) = 
+				// | a00 a01 |
+				// |   0   0 |
+				// If a00 have a value, a11 will always be 0.
+				// x0 = a01
+				// x1 = -a00
+				// Normalization =>
+				// t = sqrt(1 / (x0^ + x1^)
+				// x0 *= t 
+				// x1 *= t
+				double x[2], t;
+				x[0] = A.Data[0][1];
+				x[1] = -A.Data[0][0];
+				t = sqrt(1 / (x[0] * x[0] + x[1] * x[1]));
+				x[0] *= t;
+				x[1] *= t;
+
+				// threshold
+				for (unsigned i = 0; i < 2; ++i)
+				{
+					if (-10E-12 < x[i] && x[i] < 10E-12)
+					{
+						x[i] = 0;
+					}
+				}
+
+				tempEigenVector.push_back(x[0]);
+				tempEigenVector.push_back(x[1]);
+				eigenVectors.push_back(tempEigenVector);
+			}
+			else
+			{
+				// (A - DnI) = 
+				// |   0 a01 |
+				// |   0   0 |
+				// x0 = n
+				// x1 = 0
+				// Normalization 
+				// x0 = 1
+				// x1 = 0
+				tempEigenVector.push_back(1);
+				tempEigenVector.push_back(0);
+				eigenVectors.push_back(tempEigenVector);
+			}
+			tempEigenVector.clear();
+		}
 	}
 	else if (this->Data.size() == 3)
 	{
@@ -449,7 +508,7 @@ std::vector<Matrix> Matrix::eigen()
 		//     - A00 * A12 * A21 
 		//     - A01 * A10 * A22
 		// If a = 1, bcd will *= -1
-		double b, c, d, q, r, t;
+		double b, c, d, q, r, t, e[3];
 		b = -this->Data[0][0] - this->Data[1][1] - this->Data[2][2];
 
 		c = + this->Data[0][0] * this->Data[1][1] \
@@ -471,9 +530,16 @@ std::vector<Matrix> Matrix::eigen()
 		t = acos(r / (sqrt(q * q * q)));
 
 		// Get eigenvalues by Cubic Equation
-		eigenValues.push_back(-2 * sqrt(q) * cos(t / 3) - b / 3);
-		eigenValues.push_back(-2 * sqrt(q) * cos((t + 2 * M_PI) / 3) - b / 3);
-		eigenValues.push_back(-2 * sqrt(q) * cos((t - 2 * M_PI) / 3) - b / 3);
+		// 0 isn't a eigenvalue
+		if ((e[0] = -2 * sqrt(q) * cos(t / 3) - b / 3) == 0 || \
+			(e[1] = -2 * sqrt(q) * cos((t + 2 * M_PI) / 3) - b / 3) == 0 || \
+			(e[2] = -2 * sqrt(q) * cos((t - 2 * M_PI) / 3) - b / 3) == 0)
+		{
+			throw MATRIX_ERROR::NON_DIAGONALIZABLE;
+		}
+		eigenValues.push_back(e[0]);
+		eigenValues.push_back(e[1]);
+		eigenValues.push_back(e[2]);
 		
 		// Get eigenvectors
 		for (unsigned int n = 0; n < 3; ++n)
@@ -498,9 +564,32 @@ std::vector<Matrix> Matrix::eigen()
 				// x0 = (a11 * a02 - a12 * a01) / a00
 				// x1 = a12
 				// x2 = -a11
-				tempEigenVector.push_back((A.Data[1][1] * A.Data[0][2] - A.Data[1][2] * A.Data[0][1]) / A.Data[0][0]);
-				tempEigenVector.push_back(A.Data[1][2]);
-				tempEigenVector.push_back(-A.Data[1][1]);
+				// Normalization =>
+				// t = sqrt(1 / (x0^ + x1^ + x2^)
+				// x0 *= t 
+				// x1 *= t
+				// x2 *= t
+				double x[3], t;
+				x[0] = (A.Data[1][1] * A.Data[0][2] - A.Data[1][2] * A.Data[0][1]) / A.Data[0][0];
+				x[1] = A.Data[1][2];
+				x[2] = -A.Data[1][1];
+				t = sqrt(1 / (x[0] * x[0] + x[1] * x[1] + x[2] * x[2]));
+				x[0] *= t;
+				x[1] *= t;
+				x[2] *= t;
+
+				// threshold
+				for (unsigned i = 0; i < 3; ++i)
+				{
+					if (-10E-12 < x[i] && x[i] < 10E-12)
+					{
+						x[i] = 0;
+					}
+				}
+
+				tempEigenVector.push_back(x[0]);
+				tempEigenVector.push_back(x[1]);
+				tempEigenVector.push_back(x[2]);
 				eigenVectors.push_back(tempEigenVector);
 			}
 			else
@@ -509,17 +598,20 @@ std::vector<Matrix> Matrix::eigen()
 				// |   0 a01 a02 |
 				// |   0   0 a12 |
 				// |   0   0   0 |
-				// x0 = 0
+				// x0 = n
 				// x1 = 0
 				// x2 = 0
-				tempEigenVector.push_back(0);
+				// Normalization 
+				// x0 = 1
+				// x1 = 0
+				// x2 = 0
+				tempEigenVector.push_back(1);
 				tempEigenVector.push_back(0);
 				tempEigenVector.push_back(0);
 				eigenVectors.push_back(tempEigenVector);
 			}
 			tempEigenVector.clear();
 		}
-
 	}
 
 	// Produce matrix containing eigenvectors as columns 
@@ -527,7 +619,7 @@ std::vector<Matrix> Matrix::eigen()
 	{
 		tempMatrix[0].Data.push_back(eigenVectors[i]);
 	}
-	tempMatrix[0].trans();
+	tempMatrix[0] = tempMatrix[0].trans();
 
 	// Produce diagonal eigenvalues matrix
 	for (unsigned int i = 0; i < eigenValues.size(); ++i)

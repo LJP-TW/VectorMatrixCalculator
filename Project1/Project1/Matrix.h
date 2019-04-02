@@ -114,7 +114,8 @@ enum class MATRIX_ERROR {
 	DIMENSION_NON_EQUIVALENT, // A 與 B 維度不同
 	EIGEN_DIMENSION_ERROR, // 目前 eigen() 只支援 2x2 或 3x3 Matrix
 	MULTIPLICATION_DIMENSION_ERROR, // A 與 B 不能做乘法
-	NON_SINGULAR, // Matrix 是 non-singular matrix
+	NON_DIAGONALIZABLE, // Matrix 不是 diagonalizable matrix
 	NON_SQUARE, // Matrix 不是 square matrix
-	ROW_DIMENSION_NON_EQUIVALENT // A 與 B Row 的維度不同
+	ROW_DIMENSION_NON_EQUIVALENT, // A 與 B Row 的維度不同
+	SINGULAR // Matrix 是 singular matrix
 };

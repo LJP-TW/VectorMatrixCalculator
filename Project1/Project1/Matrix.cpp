@@ -1,9 +1,18 @@
 #include "Matrix.h"
 #include <cstdlib>
 #include <cmath>
+#include <stdlib.h>
+#include <time.h>
+
+#define DEBUG
+#ifdef DEBUG
+#include <iostream>
+#endif
 
 #define _USE_MATH_DEFINES
 #include <math.h>
+
+#define THRESHOLD 10E-12
 
 Matrix::Matrix()
 {
@@ -183,7 +192,7 @@ unsigned int Matrix::rank()
 		for (unsigned int x = 0; x < A.Data[0].size(); ++x)
 		{
 			// threshold
-			if (-10E-12 < A.Data[y][x] && A.Data[y][x] < 10E-12)
+			if (-THRESHOLD < A.Data[y][x] && A.Data[y][x] < THRESHOLD)
 			{
 				A.Data[y][x] = 0;
 			}
@@ -390,7 +399,7 @@ std::vector<Matrix> Matrix::eigen()
 	{
 		throw MATRIX_ERROR::NON_SQUARE;
 	}
-	else if (this->Data.size() != 2 && this->Data.size() != 3)
+	else if (this->Data.size() > 3)
 	{
 		throw MATRIX_ERROR::EIGEN_DIMENSION_ERROR;
 	}
@@ -402,7 +411,13 @@ std::vector<Matrix> Matrix::eigen()
 	Matrix tempMatrix[2];
 
 	// Find eigenvalues and eigenvectors
-	if (this->Data.size() == 2)
+	if (this->Data.size() == 1)
+	{
+		eigenValues.push_back(this->Data[0][0]);
+		tempEigenVector.push_back(1);
+		eigenVectors.push_back(tempEigenVector);
+	}
+	else if (this->Data.size() == 2)
 	{
 		// | A00 - D      A01 |
 		// | A10      A11 - D |
@@ -417,7 +432,8 @@ std::vector<Matrix> Matrix::eigen()
 		// Get eigenvalues by Quadric Equation
 		// 0 isn't a eigenvalue
 		if ((e[0] = (-b + sqrt(b * b - 4 * c)) / 2) == 0 || \
-			(e[1] = (-b - sqrt(b * b - 4 * c)) / 2) == 0)
+			(e[1] = (-b - sqrt(b * b - 4 * c)) / 2) == 0 || \
+			 e[0] == e[1])
 		{
 			throw MATRIX_ERROR::NON_DIAGONALIZABLE;
 		}
@@ -460,7 +476,7 @@ std::vector<Matrix> Matrix::eigen()
 				// threshold
 				for (unsigned i = 0; i < 2; ++i)
 				{
-					if (-10E-12 < x[i] && x[i] < 10E-12)
+					if (-THRESHOLD < x[i] && x[i] < THRESHOLD)
 					{
 						x[i] = 0;
 					}
@@ -533,7 +549,10 @@ std::vector<Matrix> Matrix::eigen()
 		// 0 isn't a eigenvalue
 		if ((e[0] = -2 * sqrt(q) * cos(t / 3) - b / 3) == 0 || \
 			(e[1] = -2 * sqrt(q) * cos((t + 2 * M_PI) / 3) - b / 3) == 0 || \
-			(e[2] = -2 * sqrt(q) * cos((t - 2 * M_PI) / 3) - b / 3) == 0)
+			(e[2] = -2 * sqrt(q) * cos((t - 2 * M_PI) / 3) - b / 3) == 0 || \
+			 e[0] == e[1] || \
+			 e[0] == e[2] || \
+			 e[1] == e[2])
 		{
 			throw MATRIX_ERROR::NON_DIAGONALIZABLE;
 		}
@@ -581,7 +600,7 @@ std::vector<Matrix> Matrix::eigen()
 				// threshold
 				for (unsigned i = 0; i < 3; ++i)
 				{
-					if (-10E-12 < x[i] && x[i] < 10E-12)
+					if (-THRESHOLD < x[i] && x[i] < THRESHOLD)
 					{
 						x[i] = 0;
 					}
@@ -653,8 +672,11 @@ std::vector<Matrix> Matrix::pm()
 		throw MATRIX_ERROR::NON_SQUARE;
 	}
 
+	Matrix tempMatrix[2];
+	std::vector<Matrix> result;
 	std::vector<double> eigenValues;
 	std::vector<std::vector<double>> eigenVectors;
+	std::vector<Matrix> eigenResult;
 	Matrix A[2];
 	std::vector<double> xk[2];
 	double scalar = 0, temp;
@@ -662,75 +684,142 @@ std::vector<Matrix> Matrix::pm()
 	// Initial Matrix
 	A[1] = *this;
 
-	// Initial Vector [1, 0, 0, .... ]
-	xk[1].push_back(1);
-	for (unsigned int i = 1; i < A[1].Data.size(); ++i)
+	// Using Power Method & Deflation to calculate all the eigenvalues when dimension of square matrix is too big
+	while (A[1].Data.size() > 3)
 	{
-		xk[1].push_back(0);
-	}
-	xk[0] = xk[1];
-
-	// Do approximation
-	// xk[1] turn out eigenvector, corresponding to dominant eigenvalue
-	// scalar turn out dominant eigenvalue
-	do
-	{
-		// x(k) = A * x(k - 1)
-		for (unsigned int r = 0; r < A[1].Data.size(); ++r)
+		// Random Initial Vector [1, 0, 0, .... ]
+		srand(time(NULL));
+		xk[1].clear();
+		xk[1].push_back(1);
+		for (unsigned int i = 1; i < A[1].Data.size(); ++i)
 		{
-			xk[0][r] = 0;
-			for (unsigned int i = 0; i < A[1].Data.size(); ++i)
+			xk[1].push_back((double)(rand() % 1001) / 1000);
+		}
+		xk[0] = xk[1];
+
+		// Do approximation
+		// xk[1] turn out eigenvector, corresponding to dominant eigenvalue
+		// scalar turn out dominant eigenvalue
+		do
+		{
+#ifdef DEBUG
+			// DEBUG
+			std::cout << "xk = ";
+			for (unsigned int i = 0; i < xk[1].size(); ++i)
 			{
-				xk[0][r] += this->Data[r][i] * xk[1][i];
+				std::cout << xk[0][i] << " ";
+			}
+			std::cout << "\n";
+#endif
+
+			// x(k) = A * x(k - 1)
+			for (unsigned int r = 0; r < A[1].Data.size(); ++r)
+			{
+				xk[0][r] = 0;
+				for (unsigned int i = 0; i < A[1].Data.size(); ++i)
+				{
+					xk[0][r] += this->Data[r][i] * xk[1][i];
+				}
+			}
+
+			// Find new scalar
+			temp = scalar;
+			scalar = 0;
+
+			for (unsigned int i = 0; i < xk[0].size(); ++i)
+			{
+				if (abs(xk[0][i]) > abs(scalar))
+				{
+					scalar = xk[0][i];
+				}
+			}
+
+			// Scaling
+			for (unsigned int i = 0; i < xk[0].size(); ++i)
+			{
+				xk[0][i] /= scalar;
+			}
+
+			xk[1] = xk[0];
+		} while (abs(scalar - temp) > THRESHOLD);
+
+#ifdef DEBUG
+		// DEBUG
+		std::cout << "xk = ";
+		for (unsigned int i = 0; i < xk[1].size(); ++i)
+		{
+			std::cout << xk[0][i] << " ";
+		}
+		std::cout << "\n";
+#endif
+
+		// Recode dominant eigenvalue
+		eigenValues.push_back(scalar);
+
+		for (unsigned int r = 0; r < A[0].Data.size(); ++r)
+		{
+			A[0].Data[r].clear();
+		}
+		A[0].Data.clear();
+
+		// Do Wielandt deflation
+		for (unsigned int r = 1; r < A[1].Data.size(); ++r)
+		{
+			std::vector<double> tempRowVector;
+
+			for (unsigned int c = 1; c < A[1].Data.size(); ++c)
+			{
+				tempRowVector.push_back(A[1].Data[r][c] - (xk[0][r] / xk[0][0]) * A[1].Data[0][c]);
+			}
+
+			A[0].Data.push_back(tempRowVector);
+		}
+		A[1] = A[0];
+	}
+	
+	// When the matrix deflate to 3D or lower dimension, using eigen()
+	// might throw NON_DIAGONALIZABLE
+	try
+	{
+		eigenResult = A[1].eigen();
+	}
+	catch (...)
+	{
+		throw;
+	}
+	
+	for (unsigned int i = 0; i < eigenResult[1].Data.size(); ++i)
+	{
+		eigenValues.push_back(eigenResult[1].Data[i][i]);
+	}
+
+	// Produce matrix containing eigenvectors as columns 
+	// TODO:
+
+	// Produce diagonal eigenvalues matrix
+	for (unsigned int i = 0; i < eigenValues.size(); ++i)
+	{
+		std::vector<double> tempRow;
+		for (unsigned int c = 0; c < eigenValues.size(); ++c)
+		{
+			if (c == i)
+			{
+				tempRow.push_back(eigenValues[i]);
+			}
+			else
+			{
+				tempRow.push_back(0);
 			}
 		}
-
-		// Find new scalar
-		temp = scalar;
-		scalar = 0;
-
-		for (unsigned int i = 0; i < xk[0].size(); ++i)
-		{
-			if (abs(xk[0][i]) > abs(scalar))
-			{
-				scalar = xk[0][i];
-			}
-		}
-
-		// Scaling
-		for (unsigned int i = 0; i < xk[0].size(); ++i)
-		{
-			xk[0][i] /= scalar;
-		}
-
-		xk[1] = xk[0];
-
-	} while (abs(scalar - temp) < 10E-6);
-
-	// Recode dominant eigenvalue
-	eigenValues.push_back(scalar);
-
-	for (unsigned int r = 0; r < A[0].Data.size(); ++r)
-	{
-		A[0].Data[r].clear();
+		tempMatrix[1].Data.push_back(tempRow);
 	}
-	A[0].Data.clear();
 
-	// Do Wielandt deflation
-	for (unsigned int r = 1; r < A[0].Data.size(); ++r)
-	{
-		std::vector<double> tempRowVector;
+	// Produce result
+	//result.push_back(tempMatrix[0]);
+	result.push_back(tempMatrix[1]);
+	result.push_back(tempMatrix[1]);
 
-		for (unsigned int c = 1; c < A[0].Data.size(); ++c)
-		{
-			tempRowVector.push_back(A[1].Data[r][c] - (xk[0][r] / xk[0][0]) * A[1].Data[0][c]);
-		}
-
-		A[0].Data.push_back(tempRowVector);
-	}
-	A[1] = A[0];
-
-	return std::vector<Matrix>();
+	return result;
 }
 
 Matrix leastsquare(const Matrix & A, const Matrix & B)

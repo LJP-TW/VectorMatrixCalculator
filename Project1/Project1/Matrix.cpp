@@ -676,7 +676,6 @@ std::vector<Matrix> Matrix::pm()
 	std::vector<Matrix> result;
 	std::vector<double> eigenValues;
 	std::vector<std::vector<double>> eigenVectors;
-	std::vector<Matrix> eigenResult;
 	Matrix A[2];
 	std::vector<double> xk[2];
 	double scalar = 0, temp;
@@ -684,10 +683,10 @@ std::vector<Matrix> Matrix::pm()
 	// Initial Matrix
 	A[1] = *this;
 
-	// Using Power Method & Deflation to calculate all the eigenvalues when dimension of square matrix is too big
-	while (A[1].Data.size() > 3)
+	// Using Power Method & Deflation to calculate all the eigenvalues
+	while (A[1].Data.size())
 	{
-		// Random Initial Vector [1, 0, 0, .... ]
+		// Random Initial Vector [1, 0.xxx, 0.xxx, .... ]
 		srand(time(NULL));
 		xk[1].clear();
 		xk[1].push_back(1);
@@ -777,22 +776,6 @@ std::vector<Matrix> Matrix::pm()
 		A[1] = A[0];
 	}
 	
-	// When the matrix deflate to 3D or lower dimension, using eigen()
-	// might throw NON_DIAGONALIZABLE
-	try
-	{
-		eigenResult = A[1].eigen();
-	}
-	catch (...)
-	{
-		throw;
-	}
-	
-	for (unsigned int i = 0; i < eigenResult[1].Data.size(); ++i)
-	{
-		eigenValues.push_back(eigenResult[1].Data[i][i]);
-	}
-
 	// Produce matrix containing eigenvectors as columns 
 	// TODO:
 

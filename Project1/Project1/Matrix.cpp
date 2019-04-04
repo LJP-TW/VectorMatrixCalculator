@@ -718,7 +718,7 @@ std::vector<Matrix> Matrix::pm()
 				xk[0][r] = 0;
 				for (unsigned int i = 0; i < A[1].Data.size(); ++i)
 				{
-					xk[0][r] += this->Data[r][i] * xk[1][i];
+					xk[0][r] += A[1].Data[r][i] * xk[1][i];
 				}
 			}
 

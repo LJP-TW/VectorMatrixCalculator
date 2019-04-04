@@ -34,9 +34,9 @@ public:
 	/*
 	 * Return the solution of Ax=B, which A is this matrix, B is m
 	 * might throw
-	 * - ROW_DIMENSION_NON_EQUIVALENT
 	 * - NON_SQUARE
-	 * - NON_SINGULAR
+	 * - SINGULAR
+	 * - ROW_DIMENSION_NON_EQUIVALENT
 	 */
 	Matrix solve(const Matrix& m);
 
@@ -62,9 +62,9 @@ public:
 	 * will call
 	 * - solve()
 	 * might throw
-	 * - ROW_DIMENSION_NON_EQUIVALENT
 	 * - NON_SQUARE
-	 * - NON_SINGULAR
+	 * - ROW_DIMENSION_NON_EQUIVALENT
+	 * - SINGULAR
 	 */
 	Matrix inverse();
 
@@ -94,8 +94,9 @@ public:
 	 *
 	 * ATTENTION: ONLY SUPPORT 2x2 AND 3x3 MATRIX !!
 	 * might throw
-	 * - NON_SQUARE
 	 * - EIGEN_DIMENSION_ERROR
+	 * - NON_DIAGONALIZABLE
+	 * - NON_SQUARE
 	 */
 	std::vector<Matrix> eigen();
 

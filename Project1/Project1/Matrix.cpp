@@ -648,6 +648,88 @@ std::vector<Matrix> Matrix::eigen()
 
 std::vector<Matrix> Matrix::pm()
 {
+	if (this->Data.size() != (*this).Data[0].size())
+	{
+		throw MATRIX_ERROR::NON_SQUARE;
+	}
+
+	std::vector<double> eigenValues;
+	std::vector<std::vector<double>> eigenVectors;
+	Matrix A[2];
+	std::vector<double> xk[2];
+	double scalar = 0, temp;
+
+	// Initial Matrix
+	A[1] = *this;
+
+	// Initial Vector [1, 0, 0, .... ]
+	xk[1].push_back(1);
+	for (unsigned int i = 1; i < A[1].Data.size(); ++i)
+	{
+		xk[1].push_back(0);
+	}
+	xk[0] = xk[1];
+
+	// Do approximation
+	// xk[1] turn out eigenvector, corresponding to dominant eigenvalue
+	// scalar turn out dominant eigenvalue
+	do
+	{
+		// x(k) = A * x(k - 1)
+		for (unsigned int r = 0; r < A[1].Data.size(); ++r)
+		{
+			xk[0][r] = 0;
+			for (unsigned int i = 0; i < A[1].Data.size(); ++i)
+			{
+				xk[0][r] += this->Data[r][i] * xk[1][i];
+			}
+		}
+
+		// Find new scalar
+		temp = scalar;
+		scalar = 0;
+
+		for (unsigned int i = 0; i < xk[0].size(); ++i)
+		{
+			if (abs(xk[0][i]) > abs(scalar))
+			{
+				scalar = xk[0][i];
+			}
+		}
+
+		// Scaling
+		for (unsigned int i = 0; i < xk[0].size(); ++i)
+		{
+			xk[0][i] /= scalar;
+		}
+
+		xk[1] = xk[0];
+
+	} while (abs(scalar - temp) < 10E-6);
+
+	// Recode dominant eigenvalue
+	eigenValues.push_back(scalar);
+
+	for (unsigned int r = 0; r < A[0].Data.size(); ++r)
+	{
+		A[0].Data[r].clear();
+	}
+	A[0].Data.clear();
+
+	// Do Wielandt deflation
+	for (unsigned int r = 1; r < A[0].Data.size(); ++r)
+	{
+		std::vector<double> tempRowVector;
+
+		for (unsigned int c = 1; c < A[0].Data.size(); ++c)
+		{
+			tempRowVector.push_back(A[1].Data[r][c] - (xk[0][r] / xk[0][0]) * A[1].Data[0][c]);
+		}
+
+		A[0].Data.push_back(tempRowVector);
+	}
+	A[1] = A[0];
+
 	return std::vector<Matrix>();
 }
 

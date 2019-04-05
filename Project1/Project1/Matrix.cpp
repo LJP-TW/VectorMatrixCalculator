@@ -212,7 +212,7 @@ unsigned int Matrix::rank()
 	return A.Data.size() - zeroRow;
 }
 
-Matrix Matrix::trans()
+Matrix Matrix::trans() const
 {
 	Matrix result;
 	for (unsigned int x = 0; x < this->Data[0].size(); ++x)
@@ -897,7 +897,16 @@ std::vector<Matrix> Matrix::pm()
 
 Matrix leastsquare(const Matrix & A, const Matrix & B)
 {
-	return Matrix();
+	if (A.Data.size() != B.Data.size())
+	{
+		throw MATRIX_ERROR::ROW_DIMENSION_NON_EQUIVALENT;
+	}
+
+	// Ax = B
+	// The best solution of x is :
+	// (A(T) * A)^(-1) * A(T) * B
+
+	return (A.trans() * A).inverse() * A.trans() * B;
 }
 
 void Matrix::ref(double threshold)

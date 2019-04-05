@@ -813,9 +813,6 @@ namespace Project1 {
 					Matrix result = leastsquare(variable_a, variable_b);
 					//先交給DataManager處理
 					//輸出
-					outputTemp += result.Data.size().ToString();
-					outputTemp += " ";
-					outputTemp += result.Data[0].size().ToString() + Environment::NewLine;
 					outputTemp += "[";
 					for (unsigned int y = 0; y < result.Data.size(); ++y)
 					{

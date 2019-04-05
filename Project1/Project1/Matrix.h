@@ -48,7 +48,7 @@ public:
 	/*
 	 * Return transpose matrix of this matrix
 	 */
-	Matrix trans();
+	Matrix trans() const;
 
 	/*
 	 * Return determinant of this matrix
@@ -100,7 +100,19 @@ public:
 	 */
 	std::vector<Matrix> eigen();
 
+	/*
+	 * Return two matrix
+	 * - The matrix containing eigenvectors as columns 
+	 * - The diagonal eigenvalues matrix
+	 * But there is no limit of dimension
+	 *
+	 * might throw
+	 * - NON_SQUARE
+	 * - NON_DIAGONALIZABLE
+	 */
 	std::vector<Matrix> pm();
+
+
 	friend Matrix leastsquare(const Matrix& A, const Matrix& B);
 
 protected:

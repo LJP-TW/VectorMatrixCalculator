@@ -2,7 +2,7 @@
 #include"DataManager.h"
 #include"DotNetUtilities.h"
 
-enum Mode {VECTOR_MODE, MATRIX_MODE};
+enum Mode { VECTOR_MODE, MATRIX_MODE };
 
 namespace Project1 {
 
@@ -852,7 +852,7 @@ namespace Project1 {
 					break;
 				case MATRIX_ERROR::NON_DIAGONALIZABLE:
 					Output->AppendText("Error: Matrix is non-diagonalizable.");
-					break; 
+					break;
 				case MATRIX_ERROR::NON_SQUARE:
 					Output->AppendText("Error: Matrix is non-square.");
 					break;
@@ -961,5 +961,5 @@ namespace Project1 {
 			Output->AppendText("-Matrix datas have been loaded-" + Environment::NewLine);
 		}
 	}
-};
+	};
 }

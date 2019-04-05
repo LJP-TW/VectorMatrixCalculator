@@ -112,7 +112,12 @@ public:
 	 */
 	std::vector<Matrix> pm();
 
-
+	/*
+	 * Return the best solution of Ax=B
+	 * might throw
+	 * - ROW_DIMENSION_NON_EQUIVALENT
+	 * - SINGULAR
+	 */
 	friend Matrix leastsquare(const Matrix& A, const Matrix& B);
 
 protected:

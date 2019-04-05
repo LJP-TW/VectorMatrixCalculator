@@ -905,8 +905,14 @@ Matrix leastsquare(const Matrix & A, const Matrix & B)
 	// Ax = B
 	// The best solution of x is :
 	// (A(T) * A)^(-1) * A(T) * B
-
-	return (A.trans() * A).inverse() * A.trans() * B;
+	try
+	{
+		return (A.trans() * A).inverse() * A.trans() * B;
+	}
+	catch (...)
+	{
+		throw;
+	}
 }
 
 void Matrix::ref(double threshold)

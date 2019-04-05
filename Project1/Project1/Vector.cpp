@@ -135,11 +135,6 @@ Vector pn(const Vector& A, const Vector& B)
 	return Vector();
 }
 
-bool isln(std::vector<Vector> vectors)
-{
-	return false;
-}
-
 std::vector<Vector> ob(std::vector<Vector> vectors)
 {
 	return std::vector<Vector>();

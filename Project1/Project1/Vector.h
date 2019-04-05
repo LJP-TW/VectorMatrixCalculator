@@ -7,6 +7,7 @@ class Vector
 {
 public:
 	Vector();
+	Vector(double);
 
 	std::string Name;
 	std::vector<double> Data;

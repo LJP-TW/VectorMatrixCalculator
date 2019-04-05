@@ -107,7 +107,7 @@ protected:
 	/*
 	 * Change this matrix into r.e.f.
 	 */
-	void ref();
+	void ref(double threshold);
 };
 
 // 定義相關錯誤

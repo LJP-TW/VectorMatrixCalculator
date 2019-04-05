@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define DEBUG
-#ifdef DEBUG
+#ifdef _DEBUG
 #include <iostream>
 #endif
 
@@ -185,19 +184,7 @@ unsigned int Matrix::rank()
 	Matrix A = *this;
 
 	// Change this matrix into r.e.f.
-	A.ref();
-
-	for (unsigned int y = 0; y < A.Data.size(); ++y)
-	{
-		for (unsigned int x = 0; x < A.Data[0].size(); ++x)
-		{
-			// threshold
-			if (-THRESHOLD < A.Data[y][x] && A.Data[y][x] < THRESHOLD)
-			{
-				A.Data[y][x] = 0;
-			}
-		}
-	}
+	A.ref(THRESHOLD);
 
 	// Check for zero row
 	unsigned int zeroRow = 0;
@@ -452,7 +439,7 @@ std::vector<Matrix> Matrix::eigen()
 				A.Data[r][r] -= eigenValues[n];
 			}
 
-			A.ref();
+			A.ref(THRESHOLD);
 
 			if (A.Data[0][0] != 0)
 			{
@@ -476,7 +463,7 @@ std::vector<Matrix> Matrix::eigen()
 				// threshold
 				for (unsigned i = 0; i < 2; ++i)
 				{
-					if (-THRESHOLD < x[i] && x[i] < THRESHOLD)
+					if (abs(x[i]) < THRESHOLD)
 					{
 						x[i] = 0;
 					}
@@ -572,7 +559,7 @@ std::vector<Matrix> Matrix::eigen()
 				A.Data[r][r] -= eigenValues[n];
 			}
 
-			A.ref();
+			A.ref(THRESHOLD);
 
 			if (A.Data[0][0] != 0)
 			{
@@ -600,7 +587,7 @@ std::vector<Matrix> Matrix::eigen()
 				// threshold
 				for (unsigned i = 0; i < 3; ++i)
 				{
-					if (-THRESHOLD < x[i] && x[i] < THRESHOLD)
+					if (abs(x[i]) < THRESHOLD)
 					{
 						x[i] = 0;
 					}
@@ -680,12 +667,19 @@ std::vector<Matrix> Matrix::pm()
 	std::vector<double> xk[2];
 	double scalar = 0, temp;
 
+	// If eigenvector still doesn't converge after doing limit times power method, 
+	// throw NON_DIAGONALIZABLE
+	int limit;
+
 	// Initial Matrix
 	A[1] = *this;
 
 	// Using Power Method & Deflation to calculate all the eigenvalues
 	while (A[1].Data.size())
 	{
+		// Initialize limit
+		limit = 2000;
+
 		// Random Initial Vector [1, 0.xxx, 0.xxx, .... ]
 		srand(time(NULL));
 		xk[1].clear();
@@ -701,7 +695,7 @@ std::vector<Matrix> Matrix::pm()
 		// scalar turn out dominant eigenvalue
 		do
 		{
-#ifdef DEBUG
+#ifdef _DEBUG
 			// DEBUG
 			std::cout << "xk = ";
 			for (unsigned int i = 0; i < xk[1].size(); ++i)
@@ -740,9 +734,14 @@ std::vector<Matrix> Matrix::pm()
 			}
 
 			xk[1] = xk[0];
+
+			if (!(--limit))
+			{
+				throw MATRIX_ERROR::NON_DIAGONALIZABLE;
+			};
 		} while (abs(scalar - temp) > THRESHOLD);
 
-#ifdef DEBUG
+#ifdef _DEBUG
 		// DEBUG
 		std::cout << "xk = ";
 		for (unsigned int i = 0; i < xk[1].size(); ++i)
@@ -777,7 +776,99 @@ std::vector<Matrix> Matrix::pm()
 	}
 	
 	// Produce matrix containing eigenvectors as columns 
-	// TODO:
+	for (unsigned int i = 0; i < eigenValues.size(); ++i)
+	{
+		std::vector<unsigned int> notPivotCols;
+		std::vector<double> x(this->Data.size());
+		std::vector<double> b(this->Data.size());
+		double t;
+
+		// Initial b
+		for (auto it = b.begin(); it != b.end(); ++it)
+		{
+			*it = 0;
+		}
+
+		// Produce (A - DnI)
+		// Dn: nth eigenvalue
+		// I : Identity matrix
+		A[0] = *this;
+		for (unsigned int r = 0; r < A[0].Data.size(); ++r)
+		{
+			A[0].Data[r][r] -= eigenValues[i];
+		}
+
+		// Reduce A to r.e.f.
+		A[0].ref(THRESHOLD * 10E3);
+
+		// Find columns that don't contain pivot
+		for (unsigned int r = 0, c = 0; r < A[0].Data.size() && c < A[0].Data.size(); ++r, ++c)
+		{
+			if (A[0].Data[r][c] == 0)
+			{
+				--r;
+				notPivotCols.push_back(c);
+			}
+		}
+
+		// Set x corresponding notPivotCols to -1
+		for (auto notPivotCol = notPivotCols.begin(); notPivotCol != notPivotCols.end(); ++notPivotCol)
+		{
+			x[*notPivotCol] = -1;
+
+			// Ax = 0
+			// ar0 * x0 + ar1 * x1 ... = 0
+			// x(notPivotCols) = -1
+			// => ar(PivotCols) * x(PivotCols) + ... = ar(notPivotCols) * 1 + ...
+			for (unsigned int r = 0; r < A[0].Data.size(); ++r)
+			{
+				b[r] += A[0].Data[r][*notPivotCol];
+				A[0].Data[r][*notPivotCol] = 0;
+			}
+		}
+
+		// Substitute x from behind
+		for (int r = A[0].Data.size() - 1; r >= 0; --r)
+		{
+			int c = A[0].Data.size() - 1;
+			for (; c >= 0; --c)
+			{
+				// Encounter a pivot
+				if (A[0].Data[r][c] != 0)
+				{
+					// Set x
+					x[c] = b[r] / A[0].Data[r][c];
+
+					// Subtract this pivot from bottom to top
+					for (int subR = r - 1; subR >= 0; --subR)
+					{
+						b[subR] -= A[0].Data[subR][c] * x[c];
+						A[0].Data[subR][c] = 0;
+					}
+
+					// Directly go to previous row
+					break;
+				}
+			}
+		}
+
+		// normalize x
+		t = 0;
+		for (unsigned int j = 0; j < x.size(); ++j)
+		{
+			t += (x[j] * x[j]);
+		}
+		t = sqrt(t);
+		for (unsigned int j = 0; j < x.size(); ++j)
+		{
+			x[j] /= t;
+		}
+
+		// x is corresponding eigenVector of eigenValues[i] !
+		eigenVectors.push_back(x);
+	}
+	tempMatrix[0].Data = eigenVectors;
+	tempMatrix[0] = tempMatrix[0].trans();
 
 	// Produce diagonal eigenvalues matrix
 	for (unsigned int i = 0; i < eigenValues.size(); ++i)
@@ -798,8 +889,7 @@ std::vector<Matrix> Matrix::pm()
 	}
 
 	// Produce result
-	//result.push_back(tempMatrix[0]);
-	result.push_back(tempMatrix[1]);
+	result.push_back(tempMatrix[0]);
 	result.push_back(tempMatrix[1]);
 
 	return result;
@@ -810,7 +900,7 @@ Matrix leastsquare(const Matrix & A, const Matrix & B)
 	return Matrix();
 }
 
-void Matrix::ref()
+void Matrix::ref(double threshold)
 {
 	// Gaussian elimination to get r.e.f.
 	for (unsigned int current_y = 0, current_x = 0; \
@@ -856,6 +946,18 @@ void Matrix::ref()
 				this->Data[r][c] -= (this->Data[current_y][c] * this->Data[r][current_x] / this->Data[current_y][current_x]);
 			}
 			this->Data[r][current_x] = 0;
+		}
+	}
+
+	for (unsigned int y = 0; y < this->Data.size(); ++y)
+	{
+		for (unsigned int x = 0; x < this->Data[0].size(); ++x)
+		{
+			// threshold
+			if (abs(this->Data[y][x]) < threshold)
+			{
+				this->Data[y][x] = 0;
+			}
 		}
 	}
 }

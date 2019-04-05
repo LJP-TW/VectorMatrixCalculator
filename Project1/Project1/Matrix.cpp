@@ -11,7 +11,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#define THRESHOLD 10E-12
+constexpr auto THRESHOLD = 10E-12;
 
 Matrix::Matrix()
 {

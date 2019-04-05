@@ -377,7 +377,7 @@ namespace Project1 {
 					// cross(A, B)
 					// 分割 A, B
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims, 2);
+					array<String^> ^variables = userCommand[1]->Split(delims, 2);
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
@@ -398,7 +398,7 @@ namespace Project1 {
 					// com(A, B)
 					// 分割 A, B
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims, 2);
+					array<String^> ^variables = userCommand[1]->Split(delims, 2);
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
@@ -413,7 +413,7 @@ namespace Project1 {
 					// proj(A, B)
 					// 分割 A, B
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims, 2);
+					array<String^> ^variables = userCommand[1]->Split(delims, 2);
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
@@ -434,7 +434,7 @@ namespace Project1 {
 					// area(A, B)
 					// 分割 A, B
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims, 2);
+					array<String^> ^variables = userCommand[1]->Split(delims, 2);
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
@@ -449,7 +449,7 @@ namespace Project1 {
 					// isparallel(A, B)
 					// 分割 A, B
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims, 2);
+					array<String^> ^variables = userCommand[1]->Split(delims, 2);
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
@@ -470,7 +470,7 @@ namespace Project1 {
 					// isorthogonal(A, B)
 					// 分割 A, B
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims, 2);
+					array<String^> ^variables = userCommand[1]->Split(delims, 2);
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
@@ -491,7 +491,7 @@ namespace Project1 {
 					// angle(A, B)
 					// 分割 A, B
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims, 2);
+					array<String^> ^variables = userCommand[1]->Split(delims, 2);
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
@@ -506,7 +506,7 @@ namespace Project1 {
 					// pn(A, B)
 					// 分割 A, B
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims, 2);
+					array<String^> ^variables = userCommand[1]->Split(delims, 2);
 					// A, B 分別交給DataManager處理
 					Vector variable_a = dataManager->VectorCalculate(variables[0]);
 					Vector variable_b = dataManager->VectorCalculate(variables[1]);
@@ -528,7 +528,7 @@ namespace Project1 {
 					// 依據 ',' 分割
 					std::vector<Vector> vectors;
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims);
+					array<String^> ^variables = userCommand[1]->Split(delims);
 					// 所有 variable 分別交給 DataManager 處理
 					for (unsigned int i = 0; i < variables->Length; ++i)
 					{
@@ -552,7 +552,7 @@ namespace Project1 {
 					// 依據 ',' 分割
 					std::vector<Vector> vectors, result;
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims);
+					array<String^> ^variables = userCommand[1]->Split(delims);
 					// 所有 variable 分別交給 DataManager 處理
 					for (unsigned int i = 0; i < variables->Length; ++i)
 					{
@@ -818,7 +818,7 @@ namespace Project1 {
 					// leastsquare(A, B)
 					// 分割 A, B
 					array<Char>^ delims = { ',' };
-					array<String^> ^variables = userInput->Split(delims, 2);
+					array<String^> ^variables = userCommand[1]->Split(delims, 2);
 					// A, B 分別交給DataManager處理
 					Matrix variable_a = dataManager->MatrixCalculate(variables[0]);
 					Matrix variable_b = dataManager->MatrixCalculate(variables[1]);

@@ -591,6 +591,18 @@ namespace Project1 {
 				}
 				Output->AppendText(Environment::NewLine);
 			}
+			catch (DATA_MANAGER_ERROR e)
+			{
+				switch (e)
+				{
+				case DATA_MANAGER_ERROR::VARIABLE_NOT_FOUND:
+					Output->AppendText("Error: Variable not found.");
+					break;
+				default:
+					break;
+				}
+				Output->AppendText(Environment::NewLine);
+			}
 			userInput = "";
 		}
 		else
@@ -858,6 +870,18 @@ namespace Project1 {
 					break;
 				case MATRIX_ERROR::SINGULAR:
 					Output->AppendText("Error: Matrix is singular.");
+					break;
+				default:
+					break;
+				}
+				Output->AppendText(Environment::NewLine);
+			}
+			catch (DATA_MANAGER_ERROR e)
+			{
+				switch (e)
+				{
+				case DATA_MANAGER_ERROR::VARIABLE_NOT_FOUND:
+					Output->AppendText("Error: Variable not found.");
 					break;
 				default:
 					break;

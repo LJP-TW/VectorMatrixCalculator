@@ -33,3 +33,8 @@ public:
 	//設置檔案路徑名稱
 	void SetFileName(std::string fileName);
 };
+
+// 定義相關錯誤
+enum class DATA_MANAGER_ERROR {
+	VARIABLE_NOT_FOUND // 找不到變數
+};

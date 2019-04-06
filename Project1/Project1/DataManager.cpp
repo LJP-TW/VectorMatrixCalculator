@@ -139,13 +139,19 @@ Vector DataManager::VectorCalculate(String^ command)
 			{
 				// 代表 postfix[i] 是 Vector 名稱
 				// 尋找對應變數 放進 stack result
+				bool isFound = false;
 				for (unsigned int j = 0; j < Vectors.size(); ++j)
 				{
 					if (postfix[i] == gcnew String(Vectors[j].Name.c_str()))
 					{
 						result.push(Vectors[j]);
+						isFound = true;
 						break;
 					}
+				}
+				if (!isFound)
+				{
+					throw DATA_MANAGER_ERROR::VARIABLE_NOT_FOUND;
 				}
 				continue;
 			}
@@ -323,15 +329,21 @@ Matrix DataManager::MatrixCalculate(System::String ^ command)
 			}
 			else
 			{
-				// 代表 postfix[i] 是 Vector 名稱
+				// 代表 postfix[i] 是 Matrix 名稱
 				// 尋找對應變數 放進 stack result
+				bool isFound = false;
 				for (unsigned int j = 0; j < Matrices.size(); ++j)
 				{
 					if (postfix[i] == gcnew String(Matrices[j].Name.c_str()))
 					{
 						result.push(Matrices[j]);
+						isFound = true;
 						break;
 					}
+				}
+				if (!isFound)
+				{
+					throw DATA_MANAGER_ERROR::VARIABLE_NOT_FOUND;
 				}
 				continue;
 			}

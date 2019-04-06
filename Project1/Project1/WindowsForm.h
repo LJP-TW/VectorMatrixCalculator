@@ -2,7 +2,7 @@
 #include"DataManager.h"
 #include"DotNetUtilities.h"
 
-enum Mode {VECTOR_MODE, MATRIX_MODE};
+enum Mode { VECTOR_MODE, MATRIX_MODE };
 
 namespace Project1 {
 
@@ -47,7 +47,7 @@ namespace Project1 {
 	private: System::Windows::Forms::ToolStripMenuItem^  LoadVectorToolStripMenuItem;
 
 
-	private: System::Windows::Forms::FlowLayoutPanel^  flowLayoutPanel2;
+
 
 	private: System::Windows::Forms::TextBox^  Output;
 
@@ -66,248 +66,245 @@ namespace Project1 {
 		Mode nowMode;
 	private: System::Windows::Forms::ToolStripMenuItem^  loadMatrixToolStripMenuItem;
 	private: System::Windows::Forms::OpenFileDialog^  openMatrixFileDialog;
-	private: System::Windows::Forms::FlowLayoutPanel^  flowLayoutPanel3;
-	private: System::Windows::Forms::TableLayoutPanel^  tableLayoutPanel2;
-	private: System::Windows::Forms::FlowLayoutPanel^  flowLayoutPanel1;
+
+
+
 	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::FlowLayoutPanel^  flowLayoutPanel4;
+	private: System::Windows::Forms::TableLayoutPanel^  tableLayoutPanel3;
+	private: System::Windows::Forms::TableLayoutPanel^  tableLayoutPanel4;
+
 
 			 System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
-		/// <summary>
-		/// 此為設計工具支援所需的方法 - 請勿使用程式碼編輯器修改
-		/// 這個方法的內容。
-		/// </summary>
-		void InitializeComponent(void)
-		{
-			this->menuStrip2 = (gcnew System::Windows::Forms::MenuStrip());
-			this->FileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->LoadVectorToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->loadMatrixToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
-			this->flowLayoutPanel3 = (gcnew System::Windows::Forms::FlowLayoutPanel());
-			this->InputLabel = (gcnew System::Windows::Forms::Label());
-			this->Input = (gcnew System::Windows::Forms::TextBox());
-			this->flowLayoutPanel2 = (gcnew System::Windows::Forms::FlowLayoutPanel());
-			this->tableLayoutPanel2 = (gcnew System::Windows::Forms::TableLayoutPanel());
-			this->flowLayoutPanel1 = (gcnew System::Windows::Forms::FlowLayoutPanel());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->Output = (gcnew System::Windows::Forms::TextBox());
-			this->flowLayoutPanel4 = (gcnew System::Windows::Forms::FlowLayoutPanel());
-			this->DataLabel = (gcnew System::Windows::Forms::Label());
-			this->DataList = (gcnew System::Windows::Forms::ListBox());
-			this->openVectorFileDialog = (gcnew System::Windows::Forms::OpenFileDialog());
-			this->openMatrixFileDialog = (gcnew System::Windows::Forms::OpenFileDialog());
-			this->menuStrip2->SuspendLayout();
-			this->tableLayoutPanel1->SuspendLayout();
-			this->flowLayoutPanel3->SuspendLayout();
-			this->flowLayoutPanel2->SuspendLayout();
-			this->tableLayoutPanel2->SuspendLayout();
-			this->flowLayoutPanel1->SuspendLayout();
-			this->flowLayoutPanel4->SuspendLayout();
-			this->SuspendLayout();
-			// 
-			// menuStrip2
-			// 
-			this->menuStrip2->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->FileToolStripMenuItem });
-			this->menuStrip2->Location = System::Drawing::Point(0, 0);
-			this->menuStrip2->Name = L"menuStrip2";
-			this->menuStrip2->Size = System::Drawing::Size(1311, 24);
-			this->menuStrip2->TabIndex = 1;
-			this->menuStrip2->Text = L"menuStrip2";
-			// 
-			// FileToolStripMenuItem
-			// 
-			this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
-				this->LoadVectorToolStripMenuItem,
-					this->loadMatrixToolStripMenuItem
-			});
-			this->FileToolStripMenuItem->Name = L"FileToolStripMenuItem";
-			this->FileToolStripMenuItem->Size = System::Drawing::Size(38, 20);
-			this->FileToolStripMenuItem->Text = L"File";
-			// 
-			// LoadVectorToolStripMenuItem
-			// 
-			this->LoadVectorToolStripMenuItem->Name = L"LoadVectorToolStripMenuItem";
-			this->LoadVectorToolStripMenuItem->Size = System::Drawing::Size(143, 22);
-			this->LoadVectorToolStripMenuItem->Text = L"Load Vector";
-			this->LoadVectorToolStripMenuItem->Click += gcnew System::EventHandler(this, &WindowsForm::LoadVectorToolStripMenuItem_Click);
-			// 
-			// loadMatrixToolStripMenuItem
-			// 
-			this->loadMatrixToolStripMenuItem->Name = L"loadMatrixToolStripMenuItem";
-			this->loadMatrixToolStripMenuItem->Size = System::Drawing::Size(143, 22);
-			this->loadMatrixToolStripMenuItem->Text = L"Load Matrix";
-			this->loadMatrixToolStripMenuItem->Click += gcnew System::EventHandler(this, &WindowsForm::LoadMatrixToolStripMenuItem_Click);
-			// 
-			// tableLayoutPanel1
-			// 
-			this->tableLayoutPanel1->ColumnCount = 1;
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				77.38636F)));
-			this->tableLayoutPanel1->Controls->Add(this->flowLayoutPanel3, 0, 1);
-			this->tableLayoutPanel1->Controls->Add(this->flowLayoutPanel2, 0, 0);
-			this->tableLayoutPanel1->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->tableLayoutPanel1->Location = System::Drawing::Point(0, 24);
-			this->tableLayoutPanel1->Name = L"tableLayoutPanel1";
-			this->tableLayoutPanel1->RowCount = 2;
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 100)));
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 91)));
-			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 20)));
-			this->tableLayoutPanel1->Size = System::Drawing::Size(1311, 795);
-			this->tableLayoutPanel1->TabIndex = 2;
-			// 
-			// flowLayoutPanel3
-			// 
-			this->flowLayoutPanel3->Controls->Add(this->InputLabel);
-			this->flowLayoutPanel3->Controls->Add(this->Input);
-			this->flowLayoutPanel3->Location = System::Drawing::Point(3, 707);
-			this->flowLayoutPanel3->Name = L"flowLayoutPanel3";
-			this->flowLayoutPanel3->Size = System::Drawing::Size(1305, 85);
-			this->flowLayoutPanel3->TabIndex = 2;
-			// 
-			// InputLabel
-			// 
-			this->InputLabel->Anchor = System::Windows::Forms::AnchorStyles::None;
-			this->InputLabel->AutoSize = true;
-			this->InputLabel->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 9, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(136)));
-			this->InputLabel->Location = System::Drawing::Point(3, 0);
-			this->InputLabel->Name = L"InputLabel";
-			this->InputLabel->Size = System::Drawing::Size(41, 16);
-			this->InputLabel->TabIndex = 0;
-			this->InputLabel->Text = L"Input";
-			// 
-			// Input
-			// 
-			this->Input->Location = System::Drawing::Point(3, 19);
-			this->Input->Multiline = true;
-			this->Input->Name = L"Input";
-			this->Input->Size = System::Drawing::Size(1293, 65);
-			this->Input->TabIndex = 1;
-			// 
-			// flowLayoutPanel2
-			// 
-			this->flowLayoutPanel2->Controls->Add(this->tableLayoutPanel2);
-			this->flowLayoutPanel2->Location = System::Drawing::Point(3, 3);
-			this->flowLayoutPanel2->Name = L"flowLayoutPanel2";
-			this->flowLayoutPanel2->Size = System::Drawing::Size(1305, 698);
-			this->flowLayoutPanel2->TabIndex = 1;
-			// 
-			// tableLayoutPanel2
-			// 
-			this->tableLayoutPanel2->ColumnCount = 2;
-			this->tableLayoutPanel2->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				12.48331F)));
-			this->tableLayoutPanel2->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				87.51669F)));
-			this->tableLayoutPanel2->Controls->Add(this->flowLayoutPanel1, 1, 0);
-			this->tableLayoutPanel2->Controls->Add(this->flowLayoutPanel4, 0, 0);
-			this->tableLayoutPanel2->Location = System::Drawing::Point(3, 3);
-			this->tableLayoutPanel2->Name = L"tableLayoutPanel2";
-			this->tableLayoutPanel2->RowCount = 1;
-			this->tableLayoutPanel2->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
-			this->tableLayoutPanel2->Size = System::Drawing::Size(1302, 695);
-			this->tableLayoutPanel2->TabIndex = 2;
-			// 
-			// flowLayoutPanel1
-			// 
-			this->flowLayoutPanel1->Controls->Add(this->label1);
-			this->flowLayoutPanel1->Controls->Add(this->Output);
-			this->flowLayoutPanel1->Location = System::Drawing::Point(165, 3);
-			this->flowLayoutPanel1->Name = L"flowLayoutPanel1";
-			this->flowLayoutPanel1->Size = System::Drawing::Size(1134, 689);
-			this->flowLayoutPanel1->TabIndex = 2;
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 9, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(136)));
-			this->label1->Location = System::Drawing::Point(3, 0);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(52, 16);
-			this->label1->TabIndex = 0;
-			this->label1->Text = L"Output";
-			// 
-			// Output
-			// 
-			this->Output->Location = System::Drawing::Point(3, 19);
-			this->Output->Multiline = true;
-			this->Output->Name = L"Output";
-			this->Output->ReadOnly = true;
-			this->Output->Size = System::Drawing::Size(1125, 664);
-			this->Output->TabIndex = 1;
-			// 
-			// flowLayoutPanel4
-			// 
-			this->flowLayoutPanel4->Controls->Add(this->DataLabel);
-			this->flowLayoutPanel4->Controls->Add(this->DataList);
-			this->flowLayoutPanel4->Location = System::Drawing::Point(3, 3);
-			this->flowLayoutPanel4->Name = L"flowLayoutPanel4";
-			this->flowLayoutPanel4->Size = System::Drawing::Size(156, 689);
-			this->flowLayoutPanel4->TabIndex = 3;
-			// 
-			// DataLabel
-			// 
-			this->DataLabel->Anchor = System::Windows::Forms::AnchorStyles::None;
-			this->DataLabel->AutoSize = true;
-			this->DataLabel->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 9, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(136)));
-			this->DataLabel->Location = System::Drawing::Point(3, 0);
-			this->DataLabel->Name = L"DataLabel";
-			this->DataLabel->Size = System::Drawing::Size(36, 16);
-			this->DataLabel->TabIndex = 2;
-			this->DataLabel->Text = L"Data";
-			// 
-			// DataList
-			// 
-			this->DataList->FormattingEnabled = true;
-			this->DataList->ItemHeight = 12;
-			this->DataList->Location = System::Drawing::Point(3, 19);
-			this->DataList->Name = L"DataList";
-			this->DataList->Size = System::Drawing::Size(153, 664);
-			this->DataList->TabIndex = 3;
-			// 
-			// openVectorFileDialog
-			// 
-			this->openVectorFileDialog->FileName = L"openVectorFileDialog";
-			this->openVectorFileDialog->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &WindowsForm::openVectorFileDialog_FileOk);
-			// 
-			// openMatrixFileDialog
-			// 
-			this->openMatrixFileDialog->FileName = L"openMatrixFileDialog";
-			this->openMatrixFileDialog->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &WindowsForm::openMatrixFileDialog_FileOk);
-			// 
-			// WindowsForm
-			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
-			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1311, 819);
-			this->Controls->Add(this->tableLayoutPanel1);
-			this->Controls->Add(this->menuStrip2);
-			this->Name = L"WindowsForm";
-			this->Text = L"VectorExample";
-			this->Load += gcnew System::EventHandler(this, &WindowsForm::WindowsForm_Load);
-			this->menuStrip2->ResumeLayout(false);
-			this->menuStrip2->PerformLayout();
-			this->tableLayoutPanel1->ResumeLayout(false);
-			this->flowLayoutPanel3->ResumeLayout(false);
-			this->flowLayoutPanel3->PerformLayout();
-			this->flowLayoutPanel2->ResumeLayout(false);
-			this->tableLayoutPanel2->ResumeLayout(false);
-			this->flowLayoutPanel1->ResumeLayout(false);
-			this->flowLayoutPanel1->PerformLayout();
-			this->flowLayoutPanel4->ResumeLayout(false);
-			this->flowLayoutPanel4->PerformLayout();
-			this->ResumeLayout(false);
-			this->PerformLayout();
+			 /// <summary>
+			 /// 此為設計工具支援所需的方法 - 請勿使用程式碼編輯器修改
+			 /// 這個方法的內容。
+			 /// </summary>
+			 void InitializeComponent(void)
+			 {
+				 this->menuStrip2 = (gcnew System::Windows::Forms::MenuStrip());
+				 this->FileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+				 this->LoadVectorToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+				 this->loadMatrixToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+				 this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
+				 this->InputLabel = (gcnew System::Windows::Forms::Label());
+				 this->Input = (gcnew System::Windows::Forms::TextBox());
+				 this->label1 = (gcnew System::Windows::Forms::Label());
+				 this->Output = (gcnew System::Windows::Forms::TextBox());
+				 this->DataLabel = (gcnew System::Windows::Forms::Label());
+				 this->DataList = (gcnew System::Windows::Forms::ListBox());
+				 this->openVectorFileDialog = (gcnew System::Windows::Forms::OpenFileDialog());
+				 this->openMatrixFileDialog = (gcnew System::Windows::Forms::OpenFileDialog());
+				 this->tableLayoutPanel3 = (gcnew System::Windows::Forms::TableLayoutPanel());
+				 this->tableLayoutPanel4 = (gcnew System::Windows::Forms::TableLayoutPanel());
+				 this->menuStrip2->SuspendLayout();
+				 this->tableLayoutPanel1->SuspendLayout();
+				 this->tableLayoutPanel3->SuspendLayout();
+				 this->tableLayoutPanel4->SuspendLayout();
+				 this->SuspendLayout();
+				 // 
+				 // menuStrip2
+				 // 
+				 this->menuStrip2->ImageScalingSize = System::Drawing::Size(20, 20);
+				 this->menuStrip2->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->FileToolStripMenuItem });
+				 this->menuStrip2->Location = System::Drawing::Point(0, 0);
+				 this->menuStrip2->Name = L"menuStrip2";
+				 this->menuStrip2->Padding = System::Windows::Forms::Padding(8, 2, 0, 2);
+				 this->menuStrip2->Size = System::Drawing::Size(1022, 27);
+				 this->menuStrip2->TabIndex = 1;
+				 this->menuStrip2->Text = L"menuStrip2";
+				 // 
+				 // FileToolStripMenuItem
+				 // 
+				 this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+					 this->LoadVectorToolStripMenuItem,
+						 this->loadMatrixToolStripMenuItem
+				 });
+				 this->FileToolStripMenuItem->Name = L"FileToolStripMenuItem";
+				 this->FileToolStripMenuItem->Size = System::Drawing::Size(45, 23);
+				 this->FileToolStripMenuItem->Text = L"File";
+				 // 
+				 // LoadVectorToolStripMenuItem
+				 // 
+				 this->LoadVectorToolStripMenuItem->Name = L"LoadVectorToolStripMenuItem";
+				 this->LoadVectorToolStripMenuItem->Size = System::Drawing::Size(168, 26);
+				 this->LoadVectorToolStripMenuItem->Text = L"Load Vector";
+				 this->LoadVectorToolStripMenuItem->Click += gcnew System::EventHandler(this, &WindowsForm::LoadVectorToolStripMenuItem_Click);
+				 // 
+				 // loadMatrixToolStripMenuItem
+				 // 
+				 this->loadMatrixToolStripMenuItem->Name = L"loadMatrixToolStripMenuItem";
+				 this->loadMatrixToolStripMenuItem->Size = System::Drawing::Size(168, 26);
+				 this->loadMatrixToolStripMenuItem->Text = L"Load Matrix";
+				 this->loadMatrixToolStripMenuItem->Click += gcnew System::EventHandler(this, &WindowsForm::LoadMatrixToolStripMenuItem_Click);
+				 // 
+				 // tableLayoutPanel1
+				 // 
+				 this->tableLayoutPanel1->ColumnCount = 1;
+				 this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+					 77.38636F)));
+				 this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Absolute,
+					 690)));
+				 this->tableLayoutPanel1->Controls->Add(this->tableLayoutPanel3, 0, 1);
+				 this->tableLayoutPanel1->Controls->Add(this->tableLayoutPanel4, 0, 0);
+				 this->tableLayoutPanel1->Dock = System::Windows::Forms::DockStyle::Fill;
+				 this->tableLayoutPanel1->Location = System::Drawing::Point(0, 27);
+				 this->tableLayoutPanel1->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+				 this->tableLayoutPanel1->Name = L"tableLayoutPanel1";
+				 this->tableLayoutPanel1->RowCount = 2;
+				 this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 100)));
+				 this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 114)));
+				 this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25)));
+				 this->tableLayoutPanel1->Size = System::Drawing::Size(1022, 475);
+				 this->tableLayoutPanel1->TabIndex = 2;
+				 // 
+				 // InputLabel
+				 // 
+				 this->InputLabel->AutoSize = true;
+				 this->InputLabel->Dock = System::Windows::Forms::DockStyle::Left;
+				 this->InputLabel->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 9, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
+					 System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(136)));
+				 this->InputLabel->Location = System::Drawing::Point(4, 0);
+				 this->InputLabel->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+				 this->InputLabel->Name = L"InputLabel";
+				 this->InputLabel->Size = System::Drawing::Size(48, 21);
+				 this->InputLabel->TabIndex = 0;
+				 this->InputLabel->Text = L"Input";
+				 // 
+				 // Input
+				 // 
+				 this->Input->Dock = System::Windows::Forms::DockStyle::Fill;
+				 this->Input->Location = System::Drawing::Point(4, 25);
+				 this->Input->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+				 this->Input->Multiline = true;
+				 this->Input->Name = L"Input";
+				 this->Input->Size = System::Drawing::Size(994, 75);
+				 this->Input->TabIndex = 1;
+				 // 
+				 // label1
+				 // 
+				 this->label1->AutoSize = true;
+				 this->label1->Dock = System::Windows::Forms::DockStyle::Left;
+				 this->label1->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 9, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
+					 System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(136)));
+				 this->label1->Location = System::Drawing::Point(142, 0);
+				 this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+				 this->label1->Name = L"label1";
+				 this->label1->Size = System::Drawing::Size(61, 16);
+				 this->label1->TabIndex = 0;
+				 this->label1->Text = L"Output";
+				 // 
+				 // Output
+				 // 
+				 this->Output->Dock = System::Windows::Forms::DockStyle::Fill;
+				 this->Output->Location = System::Drawing::Point(142, 20);
+				 this->Output->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+				 this->Output->Multiline = true;
+				 this->Output->Name = L"Output";
+				 this->Output->ReadOnly = true;
+				 this->Output->Size = System::Drawing::Size(856, 337);
+				 this->Output->TabIndex = 1;
+				 // 
+				 // DataLabel
+				 // 
+				 this->DataLabel->AutoSize = true;
+				 this->DataLabel->Dock = System::Windows::Forms::DockStyle::Left;
+				 this->DataLabel->Font = (gcnew System::Drawing::Font(L"微軟正黑體", 9, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
+					 System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(136)));
+				 this->DataLabel->Location = System::Drawing::Point(4, 0);
+				 this->DataLabel->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+				 this->DataLabel->Name = L"DataLabel";
+				 this->DataLabel->Size = System::Drawing::Size(43, 16);
+				 this->DataLabel->TabIndex = 2;
+				 this->DataLabel->Text = L"Data";
+				 // 
+				 // DataList
+				 // 
+				 this->DataList->Dock = System::Windows::Forms::DockStyle::Fill;
+				 this->DataList->FormattingEnabled = true;
+				 this->DataList->ItemHeight = 15;
+				 this->DataList->Location = System::Drawing::Point(4, 20);
+				 this->DataList->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+				 this->DataList->Name = L"DataList";
+				 this->DataList->Size = System::Drawing::Size(130, 337);
+				 this->DataList->TabIndex = 3;
+				 // 
+				 // openVectorFileDialog
+				 // 
+				 this->openVectorFileDialog->FileName = L"openVectorFileDialog";
+				 this->openVectorFileDialog->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &WindowsForm::openVectorFileDialog_FileOk);
+				 // 
+				 // openMatrixFileDialog
+				 // 
+				 this->openMatrixFileDialog->FileName = L"openMatrixFileDialog";
+				 this->openMatrixFileDialog->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &WindowsForm::openMatrixFileDialog_FileOk);
+				 // 
+				 // tableLayoutPanel3
+				 // 
+				 this->tableLayoutPanel3->ColumnCount = 1;
+				 this->tableLayoutPanel3->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+					 50)));
+				 this->tableLayoutPanel3->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+					 50)));
+				 this->tableLayoutPanel3->Controls->Add(this->Input, 0, 1);
+				 this->tableLayoutPanel3->Controls->Add(this->InputLabel, 0, 0);
+				 this->tableLayoutPanel3->Dock = System::Windows::Forms::DockStyle::Fill;
+				 this->tableLayoutPanel3->Location = System::Drawing::Point(10, 361);
+				 this->tableLayoutPanel3->Margin = System::Windows::Forms::Padding(10, 0, 10, 10);
+				 this->tableLayoutPanel3->Name = L"tableLayoutPanel3";
+				 this->tableLayoutPanel3->RowCount = 2;
+				 this->tableLayoutPanel3->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 20.19231F)));
+				 this->tableLayoutPanel3->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 79.80769F)));
+				 this->tableLayoutPanel3->Size = System::Drawing::Size(1002, 104);
+				 this->tableLayoutPanel3->TabIndex = 3;
+				 // 
+				 // tableLayoutPanel4
+				 // 
+				 this->tableLayoutPanel4->ColumnCount = 2;
+				 this->tableLayoutPanel4->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+					 13.77953F)));
+				 this->tableLayoutPanel4->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+					 86.22047F)));
+				 this->tableLayoutPanel4->Controls->Add(this->Output, 1, 1);
+				 this->tableLayoutPanel4->Controls->Add(this->DataList, 0, 1);
+				 this->tableLayoutPanel4->Controls->Add(this->label1, 1, 0);
+				 this->tableLayoutPanel4->Controls->Add(this->DataLabel, 0, 0);
+				 this->tableLayoutPanel4->Dock = System::Windows::Forms::DockStyle::Fill;
+				 this->tableLayoutPanel4->Location = System::Drawing::Point(10, 0);
+				 this->tableLayoutPanel4->Margin = System::Windows::Forms::Padding(10, 0, 10, 0);
+				 this->tableLayoutPanel4->Name = L"tableLayoutPanel4";
+				 this->tableLayoutPanel4->RowCount = 2;
+				 this->tableLayoutPanel4->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 4.709141F)));
+				 this->tableLayoutPanel4->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 95.29086F)));
+				 this->tableLayoutPanel4->Size = System::Drawing::Size(1002, 361);
+				 this->tableLayoutPanel4->TabIndex = 4;
+				 // 
+				 // WindowsForm
+				 // 
+				 this->AutoScaleDimensions = System::Drawing::SizeF(8, 15);
+				 this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+				 this->ClientSize = System::Drawing::Size(1022, 502);
+				 this->Controls->Add(this->tableLayoutPanel1);
+				 this->Controls->Add(this->menuStrip2);
+				 this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+				 this->Name = L"WindowsForm";
+				 this->Text = L"EM_Project";
+				 this->Load += gcnew System::EventHandler(this, &WindowsForm::WindowsForm_Load);
+				 this->menuStrip2->ResumeLayout(false);
+				 this->menuStrip2->PerformLayout();
+				 this->tableLayoutPanel1->ResumeLayout(false);
+				 this->tableLayoutPanel3->ResumeLayout(false);
+				 this->tableLayoutPanel3->PerformLayout();
+				 this->tableLayoutPanel4->ResumeLayout(false);
+				 this->tableLayoutPanel4->PerformLayout();
+				 this->ResumeLayout(false);
+				 this->PerformLayout();
 
-		}
+			 }
 #pragma endregion
 	private: System::Void WindowsForm_Load(System::Object^  sender, System::EventArgs^  e) {
-}
+	}
 	private: System::Void LoadVectorToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e)
 	{
 		//開啟Dialog
@@ -599,6 +596,18 @@ namespace Project1 {
 				}
 				Output->AppendText(Environment::NewLine);
 			}
+			catch (DATA_MANAGER_ERROR e)
+			{
+				switch (e)
+				{
+				case DATA_MANAGER_ERROR::VARIABLE_NOT_FOUND:
+					Output->AppendText("Error: Variable not found.");
+					break;
+				default:
+					break;
+				}
+				Output->AppendText(Environment::NewLine);
+			}
 			userInput = "";
 		}
 		else
@@ -821,9 +830,6 @@ namespace Project1 {
 					Matrix result = leastsquare(variable_a, variable_b);
 					//先交給DataManager處理
 					//輸出
-					outputTemp += result.Data.size().ToString();
-					outputTemp += " ";
-					outputTemp += result.Data[0].size().ToString() + Environment::NewLine;
 					outputTemp += "[";
 					for (unsigned int y = 0; y < result.Data.size(); ++y)
 					{
@@ -839,10 +845,6 @@ namespace Project1 {
 					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
 					Output->AppendText(outputTemp);
 				}
-				else if (userCommand[0] == "rref")
-				{
-					// TODO
-				}
 				//都沒有 則判斷找不到指令
 				else
 				{
@@ -856,14 +858,35 @@ namespace Project1 {
 				case MATRIX_ERROR::DIMENSION_NON_EQUIVALENT:
 					Output->AppendText("Error: Dimension non equivalent.");
 					break;
+				case MATRIX_ERROR::EIGEN_DIMENSION_ERROR:
+					Output->AppendText("Error: eigen() now only supports for lower than 3D matrices.");
+					break;
 				case MATRIX_ERROR::MULTIPLICATION_DIMENSION_ERROR:
 					Output->AppendText("Error: Matrix multiplication dimension error.");
+					break;
+				case MATRIX_ERROR::NON_DIAGONALIZABLE:
+					Output->AppendText("Error: Matrix is non-diagonalizable.");
+					break;
+				case MATRIX_ERROR::NON_SQUARE:
+					Output->AppendText("Error: Matrix is non-square.");
 					break;
 				case MATRIX_ERROR::ROW_DIMENSION_NON_EQUIVALENT:
 					Output->AppendText("Error: Number of row of A and B must be same when solving Ax=B.");
 					break;
-				case MATRIX_ERROR::NON_SINGULAR:
-					Output->AppendText("Error: Matrix are non-singular.");
+				case MATRIX_ERROR::SINGULAR:
+					Output->AppendText("Error: Matrix is singular.");
+					break;
+				default:
+					break;
+				}
+				Output->AppendText(Environment::NewLine);
+			}
+			catch (DATA_MANAGER_ERROR e)
+			{
+				switch (e)
+				{
+				case DATA_MANAGER_ERROR::VARIABLE_NOT_FOUND:
+					Output->AppendText("Error: Variable not found.");
 					break;
 				default:
 					break;
@@ -964,5 +987,5 @@ namespace Project1 {
 			Output->AppendText("-Matrix datas have been loaded-" + Environment::NewLine);
 		}
 	}
-};
+	};
 }

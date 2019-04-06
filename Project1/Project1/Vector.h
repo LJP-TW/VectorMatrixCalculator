@@ -32,7 +32,7 @@ public:
 	 */
 	Vector operator *(const Vector& v);
 	double norm() const;
-	double normal();//Vector
+	Vector normal();
 	friend Vector cross(const Vector& A, const Vector& B);
 	friend double com(const Vector& A,  const Vector& B);
 	friend Vector proj(const Vector& A, const Vector& B);

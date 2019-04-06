@@ -368,10 +368,15 @@ namespace Project1 {
 				else if (userCommand[0] == "normal")
 				{
 					//先交給DataManager處理裡面
-					Vector temp = dataManager->VectorCalculate(userCommand[1]);
+					Vector result = dataManager->VectorCalculate(userCommand[1]).normal();
 					//輸出
 					outputTemp += "[";
-					outputTemp += temp.normal().ToString();
+					for (unsigned int i = 0; i < result.Data.size(); ++i)
+					{
+						outputTemp += result.Data[i].ToString();
+						if (i != result.Data.size() - 1)
+							outputTemp += ",";
+					}
 					outputTemp += "]" + Environment::NewLine + Environment::NewLine;
 					Output->AppendText(outputTemp);
 				}

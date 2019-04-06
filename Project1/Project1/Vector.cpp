@@ -97,14 +97,14 @@ double Vector::norm() const
 	return mag;
 }
 
-double Vector::normal()///////////Vector
+Vector Vector::normal()
 {
 	Vector result;
 	for (unsigned int i = 0;i < this->Data.size();i++)
 	{
-		result.Data[i] = this->Data[i] * this->norm();
+		result.Data.push_back(this->Data[i] / this->norm());
 	}
-	return 0.0;//result
+	return result;
 }
 
 Vector cross(const Vector& A, const Vector& B)
@@ -336,7 +336,9 @@ std::vector<Vector> ob(std::vector<Vector> vectors)
 		{
 			ans =ans-proj(vectors[i], result[j]);
 		}
-		result.push_back(ans);
+
+		
+		result.push_back(ans.normal());
 	}
 	return result;
 }

@@ -149,11 +149,7 @@ double com(const Vector& A,const Vector& B)//comp=(A dot B)/ ||B||
 		throw VECTOR_ERROR::DIMENSION_NON_EQUIVALENT;
 	}
 	double comp = 0.0, mag=0.0;//magnitude
-	/*for (unsigned int i = 0;i < A.Data.size();i++)
-	{
-		mag += pow(A.Data[i], 2);
-	}
-	mag = sqrt(mag);*/
+	
 	for (unsigned int i = 0; i < A.Data.size(); ++i)
 	{
 		comp += A.Data[i] * B.Data[i];
@@ -194,22 +190,9 @@ double area(const Vector& A, const Vector& B)//  area=1/2 || A cross B ||
 	}
 	Vector result;
 	double temp = 0.0,area=0.0;
-	/*temp = A.Data[1] * B.Data[2] - A.Data[2] * B.Data[1];//i
-	result.Data.push_back(temp);
-	temp = 0.0;
-	temp = A.Data[0] * B.Data[2] - A.Data[2] * B.Data[0];//j
-	temp *= -1;
-	result.Data.push_back(temp);
-	temp = 0.0;
-	temp = A.Data[0] * B.Data[1] - A.Data[1] * B.Data[0];//k
-	result.Data.push_back(temp);*/
+	
 	result = cross(A, B);
 	area = result.norm();
-	/*for (unsigned int i = 0;i < 3;i++)
-	{
-		area += pow(result.Data[i], 2);
-	}
-	area = sqrt(area);*/
 	area /= 2;
 	return area;
 }
@@ -224,57 +207,38 @@ bool isparallel(const Vector& A, const Vector& B)
 	}
 	else
 	{
-		bool parallel = false;
-		if (A.Data.size() == 2)
+		double sclar = 0.0;
+		bool isparallel = true;
+		for (unsigned int i = 0;i < A.Data.size();i++)
 		{
-			//若兩向量 x與y倍數相同-->兩向量平行(內乘內等於外乘外)
-			double inner = 0.0;
-			inner = A.Data[1] * B.Data[0];
-			if (inner == (A.Data[0] / B.Data[1]))
+			if (A.Data[i] != 0 && B.Data[i] != 0)
 			{
-				parallel = true;
-			}
-		}
-		else if (A.Data.size() == 3)
-		{
-			//向量不為0 & cross 後==0 -->平行
-			if ((A.Data[0] == 0) && (A.Data[1] == 0) && (A.Data[2] == 0))
-			{
-				throw VECTOR_ERROR::CAN_NOT_JUDGE;
-			}
-			else if ((B.Data[0] == 0) && (B.Data[1] == 0) && (B.Data[2] == 0))
-			{
-				throw VECTOR_ERROR::CAN_NOT_JUDGE;
+				if (sclar == 0)
+				{
+					sclar = A.Data[i] / B.Data[i];
+				}
+				else
+				{
+					if (sclar != A.Data[i] / B.Data[i])
+					{
+						return false;
+					}
+				}
 			}
 			else
 			{
-				Vector result;
-				/*double temp = 0.0;
-				temp = A.Data[1] * B.Data[2] - A.Data[2] * B.Data[1];//i
-				result.Data.push_back(temp);
-				temp = 0.0;
-				temp = A.Data[0] * B.Data[2] - A.Data[2] * B.Data[0];//j
-				temp *= -1;
-				result.Data.push_back(temp);
-				temp = 0.0;
-				temp = A.Data[0] * B.Data[1] - A.Data[1] * B.Data[0];//k
-				result.Data.push_back(temp);*/
-				result = cross(A, B);
-				if ((result.Data[0] == 0) && (result.Data[1] == 0) && (result.Data[2] == 0))
+				if (A.Data[i] != B.Data[i])
 				{
-					parallel = true;
+					return false;
 				}
 			}
 		}
-		else
-		{
-			throw VECTOR_ERROR::CAN_NOT_JUDGE;
-		}
-		return parallel;
+		return isparallel;
+
 	}
 }
 
-bool isorthogonal(const Vector& A, const Vector& B)//未處理0
+bool isorthogonal(const Vector& A, const Vector& B)
 {
 	// 判斷是否垂直 --> 維度必須相同   //垂直-->dot=0
 	if (A.Data.size() != B.Data.size())

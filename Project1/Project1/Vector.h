@@ -31,10 +31,10 @@ public:
 	 * Dot or Scalar multiplication
 	 */
 	Vector operator *(const Vector& v);
-	double norm();
-	double normal();
+	double norm() const;
+	double normal();//Vector
 	friend Vector cross(const Vector& A, const Vector& B);
-	friend double com(const Vector& A, const Vector& B);
+	friend double com(const Vector& A,  const Vector& B);
 	friend Vector proj(const Vector& A, const Vector& B);
 	friend double area(const Vector& A, const Vector& B);
 	friend bool isparallel(const Vector& A, const Vector& B);
@@ -48,5 +48,5 @@ public:
 // 定義相關錯誤
 enum class VECTOR_ERROR {
 	DIMENSION_NON_EQUIVALENT,
-	TEST_ERROR,
+	CAN_NOT_JUDGE,
 };

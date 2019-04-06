@@ -1,9 +1,10 @@
 #include "Vector.h"
-
+#include<math.h>
+#define PI 3.14159265
 Vector::Vector()
 {
 }
-
+//////沒處理0
 Vector Vector::operator+(const Vector & v)
 {
 	// 判斷是否可以相加 --> 維度必須相同
@@ -85,63 +86,257 @@ Vector Vector::operator*(const Vector & v)
 	return result;
 }
 
-double Vector::norm()
+double Vector::norm() const
 {
-	// Hi
-	return 0.0;
+	double mag = 0.0;
+	for (unsigned int i = 0;i < this->Data.size();i++)
+	{
+		mag += pow(this->Data[i], 2);
+	}
+	mag = sqrt(mag);
+	return mag;
 }
 
-double Vector::normal()
+double Vector::normal()///////////Vector
 {
-	return 0.0;
+	Vector result;
+	for (unsigned int i = 0;i < this->Data.size();i++)
+	{
+		result.Data[i] = this->Data[i] * this->norm();
+	}
+	return 0.0;//result
 }
 
 Vector cross(const Vector& A, const Vector& B)
 {
-	return Vector();
+	// 判斷是否可以求 cross --> 維度必須為3
+	// 或其中一方為 0 --> 結果為0
+	if (A.Data.size() != 3 || B.Data.size() != 3 )
+	{
+		if ((A.Data.size() == 1 && A.Data[0] == 0) || (B.Data.size() == 1 && B.Data[0] == 0)) {}
+		else
+		{
+			throw VECTOR_ERROR::DIMENSION_NON_EQUIVALENT;
+		}
+	}
+	Vector result;
+	if (A.Data.size() == 1 || B.Data.size() == 1)
+	{
+		result.Data.push_back(0);
+	}
+	else
+	{
+		double temp = 0.0;
+		temp = A.Data[1] * B.Data[2] - A.Data[2] * B.Data[1];//i
+		result.Data.push_back(temp);
+		temp = 0.0;
+		temp = A.Data[0] * B.Data[2] - A.Data[2] * B.Data[0];//j
+		temp *= -1;
+		result.Data.push_back(temp);
+		temp = 0.0;
+		temp = A.Data[0] * B.Data[1] - A.Data[1] * B.Data[0];//k
+		result.Data.push_back(temp);
+	}
+
+	return result;
 }
 
-double com(const Vector& A, const Vector& B)
+double com(const Vector& A,const Vector& B)//comp=(A dot B)/ ||B||
 {
-	return 0.0;
+	// 判斷是否可以計算comp --> 維度必須相同
+	if (A.Data.size() != B.Data.size())
+	{
+		throw VECTOR_ERROR::DIMENSION_NON_EQUIVALENT;
+	}
+	double comp = 0.0, mag=0.0;//magnitude
+	/*for (unsigned int i = 0;i < A.Data.size();i++)
+	{
+		mag += pow(A.Data[i], 2);
+	}
+	mag = sqrt(mag);*/
+	for (unsigned int i = 0; i < A.Data.size(); ++i)
+	{
+		comp += A.Data[i] * B.Data[i];
+	}
+	
+	comp /= B.norm();
+	return comp;
 }
 
 Vector proj(const Vector& A, const Vector& B)
 {
-	return Vector();
+	// 判斷是否可以計算proj --> 維度必須相同
+	if (A.Data.size() != B.Data.size())
+	{
+		throw VECTOR_ERROR::DIMENSION_NON_EQUIVALENT;
+	}
+	double dot = 0.0,mag=0.0;
+	Vector result;
+	for (unsigned int i = 0; i < A.Data.size(); ++i)
+	{
+		dot += A.Data[i] * B.Data[i];
+		mag += pow(B.Data[i], 2);
+	}
+	dot /= mag;
+	for (unsigned int i = 0;i < B.Data.size();i++)
+	{
+		result.Data.push_back(dot*B.Data[i]);
+	}
+	return result;
 }
 
-double area(const Vector& A, const Vector& B)
+double area(const Vector& A, const Vector& B)//  area=1/2 || A cross B ||
 {
-	return 0.0;
+	// 判斷是否可以計算area(triangle) --> 維度必須為3
+	if (A.Data.size() != 3||B.Data.size()!=3)
+	{
+		throw VECTOR_ERROR::DIMENSION_NON_EQUIVALENT;
+	}
+	Vector result;
+	double temp = 0.0,area=0.0;
+	/*temp = A.Data[1] * B.Data[2] - A.Data[2] * B.Data[1];//i
+	result.Data.push_back(temp);
+	temp = 0.0;
+	temp = A.Data[0] * B.Data[2] - A.Data[2] * B.Data[0];//j
+	temp *= -1;
+	result.Data.push_back(temp);
+	temp = 0.0;
+	temp = A.Data[0] * B.Data[1] - A.Data[1] * B.Data[0];//k
+	result.Data.push_back(temp);*/
+	result = cross(A, B);
+	area = result.norm();
+	/*for (unsigned int i = 0;i < 3;i++)
+	{
+		area += pow(result.Data[i], 2);
+	}
+	area = sqrt(area);*/
+	area /= 2;
+	return area;
 }
 
 bool isparallel(const Vector& A, const Vector& B)
 {
-	return false;
+
+	// 判斷是否可以求 cross --> 維度必須為3
+	if (A.Data.size() != B.Data.size() )
+	{
+		throw VECTOR_ERROR::DIMENSION_NON_EQUIVALENT;
+	}
+	else
+	{
+		bool parallel = false;
+		if (A.Data.size() == 2)
+		{
+			//若兩向量 x與y倍數相同-->兩向量平行(內乘內等於外乘外)
+			double inner = 0.0;
+			inner = A.Data[1] * B.Data[0];
+			if (inner == (A.Data[0] / B.Data[1]))
+			{
+				parallel = true;
+			}
+		}
+		else if (A.Data.size() == 3)
+		{
+			//向量不為0 & cross 後==0 -->平行
+			if ((A.Data[0] == 0) && (A.Data[1] == 0) && (A.Data[2] == 0))
+			{
+				throw VECTOR_ERROR::CAN_NOT_JUDGE;
+			}
+			else if ((B.Data[0] == 0) && (B.Data[1] == 0) && (B.Data[2] == 0))
+			{
+				throw VECTOR_ERROR::CAN_NOT_JUDGE;
+			}
+			else
+			{
+				Vector result;
+				/*double temp = 0.0;
+				temp = A.Data[1] * B.Data[2] - A.Data[2] * B.Data[1];//i
+				result.Data.push_back(temp);
+				temp = 0.0;
+				temp = A.Data[0] * B.Data[2] - A.Data[2] * B.Data[0];//j
+				temp *= -1;
+				result.Data.push_back(temp);
+				temp = 0.0;
+				temp = A.Data[0] * B.Data[1] - A.Data[1] * B.Data[0];//k
+				result.Data.push_back(temp);*/
+				result = cross(A, B);
+				if ((result.Data[0] == 0) && (result.Data[1] == 0) && (result.Data[2] == 0))
+				{
+					parallel = true;
+				}
+			}
+		}
+		else
+		{
+			throw VECTOR_ERROR::CAN_NOT_JUDGE;
+		}
+		return parallel;
+	}
 }
 
-bool isorthogonal(const Vector& A, const Vector& B)
+bool isorthogonal(const Vector& A, const Vector& B)//未處理0
 {
-	return false;
+	// 判斷是否垂直 --> 維度必須相同   //垂直-->dot=0
+	if (A.Data.size() != B.Data.size())
+	{
+		throw VECTOR_ERROR::DIMENSION_NON_EQUIVALENT;
+	}
+	double dot = 0.0;
+	for (unsigned int i = 0;i < A.Data.size();i++)
+	{
+		dot += A.Data[i] * B.Data[i];
+	}
+	if (dot == 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 double angle(const Vector& A, const Vector& B)
 {
-	return 0.0;
+	// 求angle --> 維度必須相同
+	if (A.Data.size() != B.Data.size())
+	{
+		throw VECTOR_ERROR::DIMENSION_NON_EQUIVALENT;
+	}
+	double dot = 0.0, normA = 0.0,normB=0.0;//A dot B =||A|| ||B|| cos-->反推求角度
+	for (unsigned int i = 0;i < A.Data.size();i++)
+	{
+		dot += A.Data[i] * B.Data[i];
+		normA += pow(A.Data[i], 2);
+		normB += pow(B.Data[i], 2);
+	}
+	normA = sqrt(normA);
+	normB = sqrt(normB);
+	
+	dot = dot / (normA*normB);//arc cos
+	dot = acos(dot);//angle(弧度)
+	dot = dot * 180 / PI;//angle(degree)
+	return dot;
 }
 
 Vector pn(const Vector& A, const Vector& B)
 {
-	return Vector();
+	return cross(A,B);
 }
 
-bool isln(std::vector<Vector> vectors)
-{
-	return false;
-}
 
 std::vector<Vector> ob(std::vector<Vector> vectors)
 {
-	return std::vector<Vector>();
+	std::vector<Vector> result;
+	Vector ans;
+	for (unsigned int i = 0;i < vectors.size();i++)
+	{
+		ans = vectors[i];
+		for (unsigned int j = 0;j < i;j++)
+		{
+			ans =ans-proj(vectors[i], result[j]);
+		}
+		result.push_back(ans);
+	}
+	return result;
 }

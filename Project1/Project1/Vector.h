@@ -7,6 +7,7 @@ class Vector
 {
 public:
 	Vector();
+	Vector(double);
 
 	std::string Name;
 	std::vector<double> Data;
@@ -47,6 +48,5 @@ public:
 
 // 定義相關錯誤
 enum class VECTOR_ERROR {
-	DIMENSION_NON_EQUIVALENT,
-	CAN_NOT_JUDGE,
+	DIMENSION_NON_EQUIVALENT
 };
